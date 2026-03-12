@@ -1017,10 +1017,12 @@
                     ...darkTheme,
                     xaxis: { 
                         title: { text: 'Age (years)', font: { size: 11, color: '#64748b' } },
+                        fixedrange: false,
                         gridcolor: 'rgba(255,255,255,0.03)'
                     },
                     yaxis: { 
                         title: { text: 'Frequency', font: { size: 11, color: '#64748b' } },
+                        fixedrange: false,
                         gridcolor: 'rgba(255,255,255,0.03)'
                     },
                     shapes: [
@@ -1103,10 +1105,12 @@
                     ...darkTheme,
                     xaxis: { 
                         title: { text: 'Count', font: { size: 11, color: '#64748b' } },
+                        fixedrange: false,
                         gridcolor: 'rgba(255,255,255,0.03)'
                     },
                     yaxis: { 
                         gridcolor: 'rgba(255,255,255,0.03)',
+                        fixedrange: false,
                         tickfont: { size: 10 },
                         automargin: true
                     },
@@ -1130,10 +1134,12 @@
                     xaxis: { 
                         tickangle: -30,
                         tickfont: { size: 10 },
+                        fixedrange: false,
                         gridcolor: 'rgba(255,255,255,0.03)'
                     },
                     yaxis: { 
                         title: { text: 'Count', font: { size: 11, color: '#64748b' } },
+                        fixedrange: false,
                         gridcolor: 'rgba(255,255,255,0.03)'
                     },
                     margin: { l: 50, r: 30, t: 20, b: 100 }
@@ -1164,10 +1170,12 @@
                     xaxis: { 
                         tickangle: -30,
                         tickfont: { size: 10 },
+                        fixedrange: false,
                         gridcolor: 'rgba(255,255,255,0.03)'
                     },
                     yaxis: { 
                         title: { text: 'Count', font: { size: 11, color: '#64748b' } },
+                        fixedrange: false,
                         gridcolor: 'rgba(255,255,255,0.03)'
                     },
                     legend: {
@@ -1227,10 +1235,12 @@
                 xaxis: {
                     title: { text: 'Problem Gambling Rate (%)', font: { size: 11, color: '#64748b' } },
                     gridcolor: 'rgba(255,255,255,0.03)',
+                    fixedrange: false,
                     range: [0, Math.max(...rates) * 1.3]
                 },
                 yaxis: {
                     gridcolor: 'rgba(255,255,255,0.03)',
+                    fixedrange: false,
                     tickfont: { size: 11 }
                 },
                 margin: { l: 120, r: 50, t: 20, b: 50 }
@@ -1276,10 +1286,12 @@
                     barmode: 'overlay',
                     xaxis: {
                         title: { text: 'Days Gambling in Last 30 Days', font: { size: 11, color: '#64748b' } },
+                        fixedrange: false,
                         gridcolor: 'rgba(255,255,255,0.03)'
                     },
                     yaxis: {
                         title: { text: 'Frequency', font: { size: 11, color: '#64748b' } },
+                        fixedrange: false,
                         gridcolor: 'rgba(255,255,255,0.03)'
                     },
                     legend: {
@@ -1309,12 +1321,14 @@
                     ...darkTheme,
                     barmode: 'group',
                     xaxis: {
-                        title: { text: 'Mean Days/Month', font: { size: 11, color: '#64748b' } },
+                        title: { text: 'Avg. Days/Month', font: { size: 11, color: '#64748b' } },
+                        fixedrange: false,
                         gridcolor: 'rgba(255,255,255,0.03)'
                     },
                     yaxis: {
                         tickfont: { size: 11 },
                         automargin: true,
+                        fixedrange: false,
                         ticksuffix: '   '  // adds spaces after label, before bar
                     },
                     legend: {
@@ -1347,12 +1361,14 @@
                     ...darkTheme,
                     barmode: 'group',
                     xaxis: {
-                        title: { text: 'Mean Days/Month', font: { size: 11, color: '#64748b' } },
+                        title: { text: 'Avg. Days/Month', font: { size: 11, color: '#64748b' } },
+                        fixedrange: false,
                         gridcolor: 'rgba(255,255,255,0.03)'
                     },
                     yaxis: {
                         tickfont: { size: 11 },
                         automargin: true,
+                        fixedrange: false,
                         ticksuffix: '   '  // adds spaces after label, before bar
                     },
                     legend: {
@@ -1434,11 +1450,13 @@
                 ...darkTheme,
                 xaxis: {
                     title: { text: 'Age (years)', font: { size: 11, color: '#64748b' } },
+                    fixedrange: false,
                     gridcolor: 'rgba(255,255,255,0.03)',
                     zeroline: false
                 },
                 yaxis: {
                     title: { text: 'Avg Gambling Days/Month', font: { size: 11, color: '#64748b' } },
+                    fixedrange: false,
                     gridcolor: 'rgba(255,255,255,0.03)',
                     zeroline: false
                 },
