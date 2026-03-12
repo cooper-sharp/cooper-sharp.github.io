@@ -684,12 +684,12 @@
         }
     </style>
 </head>
-<body class="styled">
+<body class="latex">
     <!-- Style Toggle -->
     <div class="style-toggle">
-        <span class="toggle-label active" id="styledLabel">Styled</span>
-        <div class="toggle-switch" id="toggleSwitch" onclick="toggleStyle()"></div>
-        <span class="toggle-label" id="latexLabel">LaTeX</span>
+        <span class="toggle-label" id="styledLabel">Styled</span>
+        <div class="toggle-switch latex-active" id="toggleSwitch" onclick="toggleStyle()"></div>
+        <span class="toggle-label active" id="latexLabel">LaTeX</span>
     </div>
 
     <!-- Toggle Hint Tooltip -->
@@ -1038,10 +1038,10 @@
         // On page load
         document.addEventListener('DOMContentLoaded', function() {
             // Check for saved style preference
-            const savedStyle = localStorage.getItem('cvStyle');
-            if (savedStyle === 'latex') {
-                toggleStyle();
-            }
+        const savedStyle = localStorage.getItem('cvStyle');
+        if (savedStyle === 'styled') {
+            toggleStyle();
+        }
 
             // Show hint only if not seen before
             if (!localStorage.getItem('cvHintSeen')) {
