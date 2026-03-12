@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<<<<<<< Updated upstream
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -116,3 +117,1056 @@
     <!-- Add your scripts or additional content here -->
   </body>
 </html>
+=======
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cooper J. Sharp - CV</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@400;500;600&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-accent: #10b981;
+            --color-accent-dark: #059669;
+        }
+
+        /* Base body styles */
+        body {
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+
+        a {
+            transition: color 0.2s ease;
+        }
+
+        /* ==================== */
+        /* STYLED MODE (Default) */
+        /* ==================== */
+        body.styled {
+            font-family: "DM Sans", sans-serif;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            min-height: 100vh;
+            color: #333;
+            padding: 2rem;
+        }
+
+        .styled .resume-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .styled .header {
+            text-align: center;
+            padding-bottom: 2rem;
+            border-bottom: 3px solid var(--color-accent);
+            margin-bottom: 2rem;
+        }
+
+        .styled h1 {
+            font-family: "Crimson Pro", serif;
+            font-size: 2.5rem;
+            font-weight: 500;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .styled .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        .styled .contact-info a {
+            color: var(--color-accent-dark);
+            text-decoration: none;
+        }
+
+        .styled .contact-info a:hover {
+            color: var(--color-accent);
+            text-decoration: underline;
+        }
+
+        .styled .section {
+            margin-bottom: 2.5rem;
+        }
+
+        .styled .section-title {
+            font-family: "Crimson Pro", serif;
+            font-size: 1.4rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--color-accent);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .styled .item {
+            margin-bottom: 1.5rem;
+            padding: 1.25rem;
+            background: linear-gradient(135deg, #f0fdf4 0%, #e6fffa 100%);
+            border-radius: 10px;
+            border-left: 4px solid var(--color-accent);
+        }
+
+        .styled .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            margin-bottom: 0.4rem;
+        }
+
+        .styled .item-title {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1.05rem;
+        }
+
+        .styled .item-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .styled .item-subtitle {
+            color: #555;
+            font-style: italic;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .styled .item-description {
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        .styled ul {
+            list-style: none;
+            margin-top: 0.75rem;
+        }
+
+        .styled ul li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #555;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .styled ul li:before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: var(--color-accent);
+            font-weight: bold;
+        }
+
+        .styled .pub-list, .styled .pres-list {
+            list-style: none;
+        }
+
+        .styled .pub-list li, .styled .pres-list li {
+            padding-left: 0;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .styled .pub-list li:last-child, .styled .pres-list li:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .styled .pub-list li:before, .styled .pres-list li:before {
+            display: none;
+        }
+
+        .styled .pub-title {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .styled .pub-authors {
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        .styled .pub-venue {
+            color: var(--color-accent-dark);
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+
+        .styled .pub-venue a {
+            color: var(--color-accent-dark);
+        }
+
+        .styled .skills-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .styled .skill-row {
+            display: flex;
+            gap: 0.5rem;
+            align-items: baseline;
+            padding: 0.75rem 1rem;
+            background: linear-gradient(135deg, #f0fdf4 0%, #e6fffa 100%);
+            border-radius: 8px;
+            border-left: 4px solid var(--color-accent);
+        }
+
+        .styled .skill-label {
+            font-weight: 600;
+            color: var(--color-accent-dark);
+            min-width: 140px;
+            font-size: 0.9rem;
+        }
+
+        .styled .skill-items {
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        .styled .back-button {
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            font-size: 0.9rem;
+        }
+
+        .styled .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        /* ==================== */
+        /* LATEX MODE           */
+        /* ==================== */
+        body.latex {
+            font-family: "EB Garamond", "Times New Roman", serif;
+            background: #ffffff;
+            min-height: 100vh;
+            color: #000;
+            padding: 0;
+        }
+
+        .latex .resume-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 2.5rem 3rem;
+            box-shadow: none;
+        }
+
+        .latex .header {
+            text-align: center;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #000;
+            margin-bottom: 1.5rem;
+        }
+
+        .latex h1 {
+            font-family: "EB Garamond", serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.02em;
+        }
+
+        .latex .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            font-size: 0.95rem;
+            color: #000;
+        }
+
+        .latex .contact-info span {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .latex .contact-info .separator {
+            color: #666;
+        }
+
+        .latex .contact-info a {
+            color: #000;
+            text-decoration: none;
+        }
+
+        .latex .contact-info a:hover {
+            text-decoration: underline;
+        }
+
+        .latex .section {
+            margin-bottom: 1.5rem;
+        }
+
+        .latex .section-title {
+            font-family: "EB Garamond", serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.25rem;
+            border-bottom: 1px solid #000;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .latex .item {
+            margin-bottom: 1rem;
+            padding: 0;
+            background: none;
+            border: none;
+            border-radius: 0;
+        }
+
+        .latex .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            margin-bottom: 0.1rem;
+        }
+
+        .latex .item-title {
+            font-weight: 600;
+            color: #000;
+            font-size: 1rem;
+        }
+
+        .latex .item-date {
+            color: #000;
+            font-size: 0.95rem;
+            font-style: italic;
+        }
+
+        .latex .item-subtitle {
+            color: #000;
+            font-style: italic;
+            margin-bottom: 0.25rem;
+            font-size: 0.95rem;
+        }
+
+        .latex .item-description {
+            color: #000;
+            font-size: 0.95rem;
+        }
+
+        .latex ul {
+            list-style: none;
+            margin-top: 0.4rem;
+            margin-left: 1rem;
+        }
+
+        .latex ul li {
+            position: relative;
+            padding-left: 1rem;
+            margin-bottom: 0.35rem;
+            color: #000;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        .latex ul li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #000;
+        }
+
+        .latex .pub-list, .latex .pres-list {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .latex .pub-list li, .latex .pres-list li {
+            padding-left: 1.5rem;
+            text-indent: -1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .latex .pub-list li:before, .latex .pres-list li:before {
+            display: none;
+        }
+
+        .latex .pub-item {
+            display: inline;
+        }
+
+        .latex .pub-authors {
+            color: #000;
+        }
+
+        .latex .pub-title {
+            color: #000;
+        }
+
+        .latex .pub-venue {
+            font-style: italic;
+            color: #000;
+        }
+
+        .latex .pub-venue a {
+            color: #000;
+        }
+
+        .latex .skills-grid {
+            display: block;
+        }
+
+        .latex .skill-row {
+            display: flex;
+            gap: 0.5rem;
+            align-items: baseline;
+            padding: 0.2rem 0;
+            background: none;
+            border: none;
+            border-radius: 0;
+        }
+
+        .latex .skill-label {
+            font-weight: 600;
+            color: #000;
+            min-width: 160px;
+            font-size: 0.95rem;
+        }
+
+        .latex .skill-items {
+            color: #000;
+            font-size: 0.95rem;
+        }
+
+        .latex .back-button {
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            padding: 6px 14px;
+            background: #fff;
+            color: #000;
+            text-decoration: none;
+            border: 1px solid #000;
+            border-radius: 0;
+            font-size: 0.9rem;
+            font-family: "EB Garamond", serif;
+        }
+
+        .latex .back-button:hover {
+            background: #000;
+            color: #fff;
+        }
+
+        /* ==================== */
+        /* TOGGLE SWITCH        */
+        /* ==================== */
+        .style-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.6rem 1rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            font-family: "DM Sans", sans-serif;
+            font-size: 0.85rem;
+        }
+
+        .toggle-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .toggle-label.active {
+            color: #000;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            background: var(--color-accent);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .toggle-switch.latex-active {
+            background: #333;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 18px;
+            height: 18px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-switch.latex-active::after {
+            transform: translateX(20px);
+        }
+
+        /* ==================== */
+        /* TOGGLE HINT TOOLTIP  */
+        /* ==================== */
+        .toggle-hint {
+            position: fixed;
+            top: 4rem;
+            right: 1rem;
+            background: #1e293b;
+            color: white;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            display: none;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 999;
+            animation: slideIn 0.4s ease-out;
+            font-family: "DM Sans", sans-serif;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-hint::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            right: 2rem;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-bottom: 6px solid #1e293b;
+        }
+
+        .toggle-hint button {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0;
+            line-height: 1;
+            transition: color 0.2s ease;
+        }
+
+        .toggle-hint button:hover {
+            color: white;
+        }
+
+        @keyframes slideIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(-10px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        /* Hide emoji in latex mode */
+        .latex .emoji {
+            display: none;
+        }
+
+        .styled .emoji {
+            margin-right: 0.25rem;
+        }
+
+        /* Research Interests */
+        .research-interests {
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .styled .research-interests {
+            color: #555;
+            padding: 1rem;
+            background: linear-gradient(135deg, #f0fdf4 0%, #e6fffa 100%);
+            border-radius: 10px;
+            border-left: 4px solid var(--color-accent);
+        }
+
+        .latex .research-interests {
+            color: #000;
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: white !important;
+                padding: 0 !important;
+            }
+            .resume-container {
+                box-shadow: none !important;
+                padding: 1rem !important;
+            }
+            .back-button, .style-toggle, .toggle-hint {
+                display: none !important;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .styled .resume-container {
+                padding: 1.5rem;
+            }
+            .latex .resume-container {
+                padding: 1.5rem;
+            }
+            .styled h1, .latex h1 {
+                font-size: 1.8rem;
+            }
+            .contact-info {
+                flex-direction: column;
+                gap: 0.4rem !important;
+                align-items: center;
+            }
+            .item-header {
+                flex-direction: column;
+            }
+            .style-toggle {
+                top: auto;
+                bottom: 1rem;
+                right: 1rem;
+            }
+            .toggle-hint {
+                top: auto;
+                bottom: 4.5rem;
+                right: 1rem;
+            }
+            .toggle-hint::before {
+                top: auto;
+                bottom: -6px;
+                border-bottom: none;
+                border-top: 6px solid #1e293b;
+            }
+            .styled .skill-row, .latex .skill-row {
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+            .styled .skill-label, .latex .skill-label {
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body class="styled">
+    <!-- Style Toggle -->
+    <div class="style-toggle">
+        <span class="toggle-label active" id="styledLabel">Styled</span>
+        <div class="toggle-switch" id="toggleSwitch" onclick="toggleStyle()"></div>
+        <span class="toggle-label" id="latexLabel">LaTeX</span>
+    </div>
+
+    <!-- Toggle Hint Tooltip -->
+    <div class="toggle-hint" id="toggleHint">
+        <span>Switch between styled and academic LaTeX views</span>
+        <button onclick="dismissHint()">✕</button>
+    </div>
+
+    <div class="resume-container">
+        <a href="index.html" class="back-button">← Back to Home</a>
+        
+        <!-- Header -->
+        <div class="header">
+            <h1>Cooper Joseph Sharp</h1>
+            <div class="contact-info">
+                <span>Pennsylvania, USA</span>
+                <span class="separator">|</span>
+                <span><a href="mailto:cooperjosephsharp@gmail.com">cooperjosephsharp@gmail.com</a></span>
+                <span class="separator">|</span>
+                <span><a href="https://cooper-sharp.github.io" target="_blank">cooper-sharp.github.io</a></span>
+            </div>
+        </div>
+
+        <!-- Research Interests -->
+        <div class="section">
+            <h2 class="section-title"><span class="emoji">🔬</span>Research Interests</h2>
+            <p class="research-interests">
+                Reward processing, decision-making, and social cognition across the lifespan, with a focus on gambling behavior, financial exploitation risk, and neuroimaging (fMRI) methodology. Consistent contributor and promoter of open science practices.
+            </p>
+        </div>
+
+        <!-- Education -->
+        <div class="section">
+            <h2 class="section-title"><span class="emoji">🎓</span>Education</h2>
+            
+            <div class="item">
+                <div class="item-header">
+                    <div class="item-title">M.S., Business Analytics</div>
+                    <div class="item-date">January 2024 – May 2026</div>
+                </div>
+                <div class="item-subtitle">Temple University, Philadelphia, PA</div>
+                <div class="item-description">GPA: 3.88 / 4.0</div>
+            </div>
+            
+            <div class="item">
+                <div class="item-header">
+                    <div class="item-title">B.S., Neuroscience · Minor, Psychology</div>
+                    <div class="item-date">September 2020 – August 2023</div>
+                </div>
+                <div class="item-subtitle">Temple University, Philadelphia, PA</div>
+                <div class="item-description">GPA: 3.65 / 4.0</div>
+            </div>
+        </div>
+
+        <!-- Work Experience -->
+        <div class="section">
+            <h2 class="section-title"><span class="emoji">💼</span>Work Experience</h2>
+            
+            <div class="item">
+                <div class="item-header">
+                    <div class="item-title">Laboratory Manager</div>
+                    <div class="item-date">October 2023 – Present</div>
+                </div>
+                <div class="item-subtitle">Temple University Neuroeconomics Lab, PI: Dr. David V. Smith, Philadelphia, PA</div>
+                <ul>
+                    <li>Managed data collection, preprocessing, and analysis for a $1.975M NIH grant (R01-067011), recruiting over 300 participants between ages 21–90 from the Philadelphia Metro Area.</li>
+                    <li>Designed and launched an ongoing 60-subject fMRI neuroimaging project investigating neural differences in reward response, action inhibition, advertisement consumption, and betting behavior between gamblers and non-gamblers.</li>
+                    <li>Administered, scored, and trained others in providing neuropsychological batteries to both healthy and Mildly Cognitive-Impaired individuals (BVMT, HVLT, Trails, HART).</li>
+                    <li>Managed and advised technical aspects of a longitudinal precision-imaging fMRI project (Night Owls Scan Club) investigating individual differences in mood and reward response.</li>
+                    <li>Mentored undergraduate researchers, supervising their independent projects and guiding university award and grant applications using various data sources (ABCD Dataset, in-house, Qualtrics).</li>
+                    <li>Designed end-to-end fMRI data storage, preprocessing, and analysis pipelines using open-source tools (fMRIPrep, HeuDiConv, Warpkit, tedana, FSL).</li>
+                    <li>Co-authored pre-registrations for neuroimaging and behavioral analyses using OSF and AsPredicted.</li>
+                    <li>Utilized the Temple University High-Performance Computing Cluster to carry out batch neuroimaging analyses (275,000+ CPU hours).</li>
+                    <li>Contributed to open science through the upload and maintenance of neuroimaging datasets to OpenNeuro using CLI tools and the Brain Imaging Data Structure (BIDS) specification.</li>
+                </ul>
+            </div>
+            
+            <div class="item">
+                <div class="item-header">
+                    <div class="item-title">Undergraduate Research Assistant</div>
+                    <div class="item-date">March 2022 – October 2023</div>
+                </div>
+                <div class="item-subtitle">Temple University Neuroeconomics Lab, PI: Dr. David V. Smith, Philadelphia, PA</div>
+                <ul>
+                    <li>Contributed to recruitment efforts for R01-067011 through scheduled participant communication and screening.</li>
+                    <li>Cleaned and analyzed behavioral datasets (N=300+) collected as part of R01-067011 using Python and R.</li>
+                    <li>Assisted graduate students with research projects and publication efforts as needed.</li>
+                    <li>Collected neuroimaging data as a scan operator at the Temple University Brain Research Imaging Center.</li>
+                </ul>
+            </div>
+            
+            <div class="item">
+                <div class="item-header">
+                    <div class="item-title">Supervisor</div>
+                    <div class="item-date">September 2020 – January 2022</div>
+                </div>
+                <div class="item-subtitle">Levi Strauss & Co, Washington, PA</div>
+                <ul>
+                    <li>Supervised store personnel during business hours and operations.</li>
+                    <li>Tracked KPIs and metrics to ensure store performance was meeting regional quotas.</li>
+                    <li>Assisted customers as needed with checkout, ship-from-store, online ordering, and returns.</li>
+                    <li>Completed cash lock-up and nightly drawer audits in accordance with store policy.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Publications -->
+        <div class="section">
+            <h2 class="section-title"><span class="emoji">📄</span>Publications</h2>
+            
+            <h3 style="font-size: 1rem; margin-bottom: 0.75rem; color: inherit; font-weight: 600;">Journal Articles</h3>
+            <ul class="pub-list">
+                <li>
+                    <span class="pub-authors">Matthew Mattoni, Shenghan Wang, <strong>Cooper J. Sharp</strong>, Thomas M. Olino, David V. Smith.</span>
+                    <span class="pub-title">"Precision Imaging for Intraindividual Investigation of the Reward Response."</span>
+                    <span class="pub-venue"><em>Human Brain Mapping</em>, 2026. <a href="https://doi.org/10.1101/2025.09.26.678878" target="_blank">DOI: 10.1101/2025.09.26.678878</a></span>
+                </li>
+                <li>
+                    <span class="pub-authors">David V. Smith, James Wygaarden, <strong>Cooper J. Sharp</strong>, Daniel Sazhin, Ori Zaff, Dominic Fareri, Johanna Jarcho.</span>
+                    <span class="pub-title">"An fMRI dataset of social and nonsocial reward processing in young adults."</span>
+                    <span class="pub-venue"><em>Data in Brief</em>, 2024. <a href="https://doi.org/10.1016/j.dib.2024.110810" target="_blank">DOI: 10.1016/j.dib.2024.110810</a></span>
+                </li>
+                <li>
+                    <span class="pub-authors">David V. Smith, <strong>Cooper J. Sharp</strong>, Abraham Dachs, James Wygaarden, Daniel Sazhin, Yi Yang, Melanie Kos, Tia Tropea, Ishika Kohli, John A. Clithero, Ingrid Olson, Tania Giovannetti, Dominic Fareri, Johanna Jarcho.</span>
+                    <span class="pub-title">"Social reward and nonsocial reward processing across the adult lifespan: An interim multi-echo fMRI and diffusion dataset."</span>
+                    <span class="pub-venue"><em>Data in Brief</em>, 2024. <a href="https://doi.org/10.1016/j.dib.2024.110197" target="_blank">DOI: 10.1016/j.dib.2024.110197</a></span>
+                </li>
+            </ul>
+
+            <h3 style="font-size: 1rem; margin: 1.5rem 0 0.75rem; color: inherit; font-weight: 600;">Manuscripts in Preparation</h3>
+            <ul class="pub-list">
+                <li>
+                    <span class="pub-authors">Dominic Fareri, <strong>Cooper J. Sharp</strong>, Tania Giovannetti, David V. Smith.</span>
+                    <span class="pub-title">"Shared Reward Aging."</span>
+                    <span class="pub-venue">In preparation.</span>
+                </li>
+                <li>
+                    <span class="pub-authors"><strong>Cooper J. Sharp</strong>, Mariami Sakhiashvili, Arunachalam Lakshmanan, David V. Smith.</span>
+                    <span class="pub-title">"Reward Sensitivity and Gambling Behavior: A National Survey."</span>
+                    <span class="pub-venue">In preparation.</span>
+                </li>
+                <li>
+                    <span class="pub-authors"><strong>Cooper J. Sharp</strong>, Mariami Sakhiashvili, Arunachalam Lakshmanan, David V. Smith.</span>
+                    <span class="pub-title">"Trust Decision-Making in Problem Gambling Populations."</span>
+                    <span class="pub-venue">In preparation.</span>
+                </li>
+                <li>
+                    <span class="pub-authors"><strong>Cooper J. Sharp</strong>, Mariami Sakhiashvili, Arunachalam Lakshmanan, David V. Smith.</span>
+                    <span class="pub-title">"Response Inhibition Deficits in Problem Gambling: A Stop-Signal Task Investigation."</span>
+                    <span class="pub-venue">In preparation.</span>
+                </li>
+                <li>
+                    <span class="pub-authors">Derrick Dwamena, <strong>Cooper J. Sharp</strong>, David V. Smith, Mariami Sakhiashvili, Arunachalam Lakshmanan.</span>
+                    <span class="pub-title">"Gambling Advertisement Perception and Recall Among Gamblers and Non-Gamblers."</span>
+                    <span class="pub-venue">In preparation.</span>
+                </li>
+                <li>
+                    <span class="pub-authors">David V. Smith, James Wyngaarden, <strong>Cooper J. Sharp</strong>.</span>
+                    <span class="pub-title">"Optimizing fMRI Task Sequencing: A Pilot Study."</span>
+                    <span class="pub-venue">In preparation.</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Contributions to Open Science -->
+        <div class="section">
+            <h2 class="section-title"><span class="emoji">🌐</span>Contributions to Open Science</h2>
+            
+            <h3 style="font-size: 1rem; margin-bottom: 0.75rem; color: inherit; font-weight: 600;">OpenNeuro Datasets</h3>
+            <ul class="pub-list">
+                <li><a href="https://openneuro.org/datasets/ds007486" target="_blank">Social Reward Processing, Response Inhibition, and Cue Reactivity in Problem Gamblers</a></li>
+                <li><a href="https://openneuro.org/datasets/ds005123" target="_blank">Social Reward and Nonsocial Reward Processing Across the Adult Lifespan: An Interim Multi-echo fMRI and Diffusion Dataset</a></li>
+                <li><a href="https://openneuro.org/datasets/ds005085" target="_blank">Sequence pilot: multiecho and multiband fMRI</a></li>
+                <li><a href="https://openneuro.org/datasets/ds003745" target="_blank">An fMRI Dataset on Social Reward Processing and Decision Making in Younger and Older Adults</a></li>
+                <li><a href="https://openneuro.org/datasets/ds006707" target="_blank">Night Owls Scan Club</a></li>
+            </ul>
+
+            <h3 style="font-size: 1rem; margin: 1.5rem 0 0.75rem; color: inherit; font-weight: 600;">Selected Preregistrations (OSF)</h3>
+            <ul class="pub-list">
+                <li><a href="https://osf.io/xvfyc" target="_blank">Social Context and Reward Sensitivity in Gambling Behavior</a></li>
+                <li><a href="https://osf.io/kahb8" target="_blank">Associations of white matter hyperintensities with sensitivity to social reward</a></li>
+                <li><a href="https://osf.io/8j2bn" target="_blank">Understanding Age-Related differences between Socioeconomic Deprivation, Income Inequality, Social Support and Financial/Health and Safety Risk-Taking Behaviors</a></li>
+                <li><a href="https://osf.io/p654k" target="_blank">Self-other value integration: the neural representations of sensitivity to social context during reward processing, self-other closeness, and social reward processing in subclinical depression</a></li>
+                <li><a href="https://osf.io/tx6yw" target="_blank">Examining the Effects of Neighborhood Disadvantage on Neural Responses to Executive Control</a></li>
+            </ul>
+        </div>
+
+        <!-- Presentations -->
+        <div class="section">
+            <h2 class="section-title"><span class="emoji">🎤</span>Presentations</h2>
+            <ul class="pres-list">
+                <li>
+                    <span class="pub-authors"><strong>Cooper J. Sharp</strong>, Mariami Sakhiashvili, Arun Lakshmanan, David V. Smith.</span>
+                    <span class="pub-title">"Problem Gambling in Context: Psychological Traits and Structural Stressors Jointly Predict Gambling Severity."</span>
+                    <span class="pub-venue">Poster presented at International Conference for Responsible Gaming (ICRG), Las Vegas, NV, 2025.</span>
+                </li>
+                <li>
+                    <span class="pub-authors"><strong>Cooper J. Sharp</strong>, James B. Wygaarden, David V. Smith.</span>
+                    <span class="pub-title">"Decision-making Responses within the Cerebellum are Confounded by Nyquist Ghosting."</span>
+                    <span class="pub-venue">Poster presented at Organization for Human Brain Mapping (OHBM) Annual Meeting, Montreal, QC, Canada, 2023.</span>
+                </li>
+                <li>
+                    <span class="pub-authors">Clarence H, <strong>Cooper J. Sharp</strong>, Skudlarek R, Kos M, Mattheiss S, Mennis J, Smith DV.</span>
+                    <span class="pub-title">"Does Area Deprivation Index moderate the relationship between Amygdala Reactivity and Social Support?"</span>
+                    <span class="pub-venue">Poster presented at the Eastern Psychological Association, New York, NY, March 2025.</span>
+                </li>
+                <li>
+                    <span class="pub-authors">Wyngaarden JB, <strong>Sharp CJ</strong>, Dachs A, Sazhin D, Tropea T, Kohli I, Giovannetti T, Fareri DS, Jarcho JM, Smith DV.</span>
+                    <span class="pub-title">"Risk for financial exploitation and psychosocial factors modulate age-related differences in social reward processing."</span>
+                    <span class="pub-venue">Poster presented at the Society for Neuroscience meeting, Chicago, IL, October 2024.</span>
+                </li>
+                <li>
+                    <span class="pub-authors">Tropea TR, <strong>Sharp CJ</strong>, Dennison J, Mennis J, Smith DV.</span>
+                    <span class="pub-title">"Understanding Age-Related Risk Behaviors: Neighborhoods, Socioeconomic Deprivation and Social Support."</span>
+                    <span class="pub-venue">Poster presented at the Eastern Psychological Association Conference, Philadelphia, PA, March 2024.</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Service & Leadership -->
+        <div class="section">
+            <h2 class="section-title"><span class="emoji">🤝</span>Service & Leadership</h2>
+            
+            <div class="item">
+                <div class="item-header">
+                    <div class="item-title">MRI Usage and Safety Leader</div>
+                    <div class="item-date">March 2025 – Present</div>
+                </div>
+                <div class="item-subtitle">Temple University Brain Research Imaging Center (TUBRIC), Philadelphia, PA</div>
+                <ul>
+                    <li>Held leadership and supervisory role educating and training researchers on MRI safety protocols and scanner usage.</li>
+                    <li>Worked closely with Siemens specialist to complete system upgrade from VE11 to XA60 software alongside dedicated MR Technologist.</li>
+                </ul>
+            </div>
+            
+            <div class="item">
+                <div class="item-header">
+                    <div class="item-title">Undergraduate Teaching Assistant</div>
+                    <div class="item-date">August 2022 – January 2023</div>
+                </div>
+                <div class="item-subtitle">Foundations of Neuroscience, Dr. Cynthia Gooch, Temple University, Philadelphia, PA</div>
+                <ul>
+                    <li>Provided twice-weekly recitations and office hours for 50+ students.</li>
+                    <li>Attended class sessions and facilitated discussions regarding content-relevant topics.</li>
+                    <li>Created study guides, practice exams, and review materials for all students.</li>
+                </ul>
+            </div>
+            
+            <div class="item">
+                <div class="item-header">
+                    <div class="item-title">Neuroscience Honor Society Treasurer</div>
+                    <div class="item-date">August 2022 – May 2023</div>
+                </div>
+                <div class="item-subtitle">Nu Rho Psi, Dr. Cynthia Gooch</div>
+                <ul>
+                    <li>Kept accounting records for all student and organization payments.</li>
+                    <li>Provided funding sources and information for outreach events.</li>
+                    <li>Attended and organized community outreach events in the Philadelphia metropolitan area.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Awards & Certifications -->
+        <div class="section">
+            <h2 class="section-title"><span class="emoji">🏆</span>Awards & Certifications</h2>
+            
+            <div class="item">
+                <div class="item-header">
+                    <div class="item-title">Liberal Arts Undergraduate Research Award (LAURA Scholar)</div>
+                    <div class="item-date">2023</div>
+                </div>
+                <div class="item-subtitle">Temple University College of Liberal Arts</div>
+                <div class="item-description">Awarded for research on Nyquist ghosting artifacts in cerebellar fMRI decision-making data.</div>
+            </div>
+            
+            <div class="item">
+                <div class="item-header">
+                    <div class="item-title">Creative Arts, Research, and Scholarship (CARAS) Travel Grant</div>
+                    <div class="item-date">2023</div>
+                </div>
+                <div class="item-subtitle">Temple University</div>
+                <div class="item-description">Funded travel to present Nyquist ghosting research at the Organization for Human Brain Mapping (OHBM) Annual Meeting, Montreal, QC, Canada.</div>
+            </div>
+        </div>
+
+        <!-- Skills -->
+        <div class="section">
+            <h2 class="section-title"><span class="emoji">🛠️</span>Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-row">
+                    <span class="skill-label">Programming:</span>
+                    <span class="skill-items">Python, R, Bash, MATLAB</span>
+                </div>
+                <div class="skill-row">
+                    <span class="skill-label">Neuroimaging:</span>
+                    <span class="skill-items">fMRIPrep, FSL, HeuDiConv, tedana, Warpkit, BIDS, FreeSurfer</span>
+                </div>
+                <div class="skill-row">
+                    <span class="skill-label">Data & Statistics:</span>
+                    <span class="skill-items">Pandas, NumPy, scikit-learn, mixed-effects models, GLMs</span>
+                </div>
+                <div class="skill-row">
+                    <span class="skill-label">Tools & Platforms:</span>
+                    <span class="skill-items">Git, Docker, Singularity, REDCap, Qualtrics, HPC (SLURM)</span>
+                </div>
+                <div class="skill-row">
+                    <span class="skill-label">Writing & Publishing:</span>
+                    <span class="skill-items">LaTeX, Microsoft Office, OSF, AsPredicted</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function toggleStyle() {
+            const body = document.body;
+            const toggle = document.getElementById('toggleSwitch');
+            const styledLabel = document.getElementById('styledLabel');
+            const latexLabel = document.getElementById('latexLabel');
+
+            if (body.classList.contains('styled')) {
+                body.classList.remove('styled');
+                body.classList.add('latex');
+                toggle.classList.add('latex-active');
+                styledLabel.classList.remove('active');
+                latexLabel.classList.add('active');
+            } else {
+                body.classList.remove('latex');
+                body.classList.add('styled');
+                toggle.classList.remove('latex-active');
+                styledLabel.classList.add('active');
+                latexLabel.classList.remove('active');
+            }
+
+            // Save preference
+            const isLatex = body.classList.contains('latex');
+            localStorage.setItem('cvStyle', isLatex ? 'latex' : 'styled');
+        }
+
+        function dismissHint() {
+            document.getElementById('toggleHint').style.display = 'none';
+            localStorage.setItem('cvHintSeen', 'true');
+        }
+
+        // On page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check for saved style preference
+            const savedStyle = localStorage.getItem('cvStyle');
+            if (savedStyle === 'latex') {
+                toggleStyle();
+            }
+
+            // Show hint only if not seen before
+            if (!localStorage.getItem('cvHintSeen')) {
+                document.getElementById('toggleHint').style.display = 'flex';
+            }
+        });
+    </script>
+</body>
+</html>
+>>>>>>> Stashed changes
