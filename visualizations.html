@@ -590,7 +590,7 @@
             </div>
             <div class="hero-stat">
                 <div class="hero-stat-value" id="hero-states">—</div>
-                <div class="hero-stat-label">US States</div>
+                <div class="hero-stat-label">US States and Territories</div>
             </div>
             <div class="hero-stat">
                 <div class="hero-stat-value" id="hero-age">—</div>
@@ -615,7 +615,7 @@
                     <h2 class="section-title">Where Is Our Data From?</h2>
                     <p class="section-description">
                         Our studies drew from a geographically diverse sample across the 
-                        United States. Participants were recruited from all 50 states and the District of Columbia, with concentrations 
+                        United States. Participants were recruited from all 50 states plus the District of Columbia and Puerto Rico, with concentrations 
                         in major population centers.
                     </p>
                     <ul class="insights-list">
@@ -1397,77 +1397,93 @@
         // ============================================
         // CHART 5: Age vs Gambling Frequency Scatter
         // ============================================
-        
+                
         function renderAgeGamblingChart() {
             // Combine all data
             const allAge = [...ageGamblingData.non_problem.age, ...ageGamblingData.problem.age];
             const allFreq = [...ageGamblingData.non_problem.gambling_freq, ...ageGamblingData.problem.gambling_freq];
             
-            // Calculate linear regression
-            const n = allAge.length;
-            const sumX = allAge.reduce((a, b) => a + b, 0);
-            const sumY = allFreq.reduce((a, b) => a + b, 0);
-            const sumXY = allAge.reduce((total, x, i) => total + x * allFreq[i], 0);
-            const sumX2 = allAge.reduce((total, x) => total + x * x, 0);
-            
-            const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
-            const intercept = (sumY - slope * sumX) / n;
-            
-            const minAge = Math.min(...allAge);
-            const maxAge = Math.max(...allAge);
-            
-            const traces = [
-                {
-                    x: allAge,
-                    y: allFreq,
-                    mode: 'markers',
-                    type: 'scatter',
-                    name: 'Participants',
-                    showlegend: false,
-                    marker: {
-                        color: colors.primary,
-                        size: 5,
-                        opacity: 0.4,
-                        line: { color: 'rgba(255,255,255,0.1)', width: 0.5 }
-                    },
-                    hovertemplate: 'Age: %{x}<br>Avg Days/Month: %{y:.1f}<extra></extra>'
-                },
-                {
-                    x: [minAge, maxAge],
-                    y: [slope * minAge + intercept, slope * maxAge + intercept],
-                    mode: 'lines',
-                    type: 'scatter',
-                    name: `Trend (r = ${ageGamblingData.overall.correlation})`,
-                    line: {
-                        color: '#ec4899',
-                        width: 3
-                    },
-                    hoverinfo: 'skip'
-                }
+            // Define age bins
+            const bins = [
+                { label: '18-24', min: 18, max: 24 },
+                { label: '25-34', min: 25, max: 34 },
+                { label: '35-44', min: 35, max: 44 },
+                { label: '45-54', min: 45, max: 54 },
+                { label: '55-64', min: 55, max: 64 },
+                { label: '65+', min: 65, max: 120 }
             ];
+            
+            // Calculate mean and SEM for each bin
+            const binLabels = [];
+            const binMeans = [];
+            const binSEMs = [];
+            const binNs = [];
+            
+            bins.forEach(bin => {
+                const values = [];
+                for (let i = 0; i < allAge.length; i++) {
+                    if (allAge[i] >= bin.min && allAge[i] <= bin.max) {
+                        values.push(allFreq[i]);
+                    }
+                }
+                
+                if (values.length > 0) {
+                    const mean = values.reduce((a, b) => a + b, 0) / values.length;
+                    const variance = values.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / values.length;
+                    const sd = Math.sqrt(variance);
+                    const sem = sd / Math.sqrt(values.length);
+                    
+                    binLabels.push(bin.label);
+                    binMeans.push(parseFloat(mean.toFixed(2)));
+                    binSEMs.push(parseFloat(sem.toFixed(2)));
+                    binNs.push(values.length);
+                }
+            });
+            
+            const traces = [{
+                x: binLabels,
+                y: binMeans,
+                type: 'bar',
+                name: 'Mean Gambling Days',
+                marker: {
+                    color: colors.primary,
+                    line: { color: '#ec4899', width: 1 }
+                },
+                error_y: {
+                    type: 'data',
+                    array: binSEMs,
+                    visible: true,
+                    color: '#ffffff',
+                    thickness: 2,
+                    width: 6
+                },
+                hovertemplate: '<b>Age %{x}</b><br>Mean: %{y:.2f} days<br>SEM: ±%{error_y.array:.2f}<br>n = %{customdata}<extra></extra>',
+                customdata: binNs
+            }];
 
             const layout = {
                 ...darkTheme,
                 xaxis: {
-                    title: { text: 'Age (years)', font: { size: 11, color: '#64748b' } },
+                    title: { text: 'Age Group', font: { size: 11, color: '#64748b' } },
                     fixedrange: true,
-                    gridcolor: 'rgba(255,255,255,0.03)',
-                    zeroline: false
+                    gridcolor: 'rgba(255,255,255,0.03)'
                 },
                 yaxis: {
-                    title: { text: 'Avg Gambling Days/Month', font: { size: 11, color: '#64748b' } },
+                    title: { text: 'Avg Gambling Days/Month (± SEM)', font: { size: 11, color: '#64748b' } },
                     fixedrange: true,
                     gridcolor: 'rgba(255,255,255,0.03)',
                     zeroline: false
                 },
-                legend: {
-                    orientation: 'h',
-                    y: 1.12,
-                    x: 0.5,
-                    xanchor: 'center',
-                    font: { size: 11, color: '#94a3b8' }
-                },
-                margin: { l: 60, r: 30, t: 50, b: 50 }
+                margin: { l: 60, r: 30, t: 30, b: 50 },
+                annotations: [{
+                    x: 1,
+                    y: 1.05,
+                    xref: 'paper',
+                    yref: 'paper',
+                    text: `r = ${ageGamblingData.overall.correlation}`,
+                    showarrow: false,
+                    font: { size: 11, color: '#ec4899' }
+                }]
             };
 
             Plotly.newPlot('chart-age-gambling', traces, layout, chartConfig);
