@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects | Cooper J. Sharp</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --secondary: #6366f1;
+            --accent: #8b5cf6;
+            --bg-light: #f8fdfb;
+            --bg-card: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --text-muted: #64748b;
+            --border: rgba(0,0,0,0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.6rem 1.2rem;
+            border-radius: 100px;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateX(-4px);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.6rem 1.2rem;
+            border-radius: 100px;
+            background: rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: rgba(255,255,255,0.25);
+        }
+
+        /* Main content card */
+        .main-card {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .page-title {
+            font-family: 'Fraunces', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+        }
+
+        /* Project Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .project-card {
+            background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(16, 185, 129, 0.2);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .project-card.featured {
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+            color: white;
+        }
+
+        .project-card.featured .project-content {
+            color: #94a3b8;
+        }
+
+        .project-card.featured .project-title {
+            color: white;
+        }
+
+        .project-card.featured .project-description {
+            color: #94a3b8;
+        }
+
+        .project-card.featured .tag {
+            background: rgba(99, 102, 241, 0.2);
+            color: #a5b4fc;
+        }
+
+        @media (max-width: 768px) {
+            .project-card.featured {
+                grid-column: span 1;
+            }
+        }
+
+        .project-preview {
+            height: 180px;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card.featured .project-preview {
+            height: 220px;
+        }
+
+        .preview-icon {
+            font-size: 4rem;
+            opacity: 0.9;
+        }
+
+        .preview-pattern {
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(255,255,255,0.05) 0%, transparent 50%);
+        }
+
+        .project-content {
+            padding: 1.5rem;
+        }
+
+        .project-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+        }
+
+        .project-title {
+            font-family: 'Fraunces', serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .project-description {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .tag {
+            padding: 0.3rem 0.7rem;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--primary-dark);
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: gap 0.3s ease;
+        }
+
+        .project-card.featured .project-link {
+            color: #a5b4fc;
+        }
+
+        .project-link:hover {
+            gap: 0.75rem;
+        }
+
+        .project-link svg {
+            transition: transform 0.3s ease;
+        }
+
+        .project-link:hover svg {
+            transform: translateX(4px);
+        }
+
+        /* Coming soon overlay */
+        .coming-soon {
+            position: relative;
+        }
+
+        .coming-soon::after {
+            content: 'Coming Soon';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.3rem 0.75rem;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .coming-soon .project-link {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.85rem;
+        }
+
+        .footer a {
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <a href="index.html" class="back-link">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Home
+            </a>
+            <nav class="nav-links">
+                <a href="resume.html" class="nav-link">Resume</a>
+                <a href="projects.html" class="nav-link active">Projects</a>
+            </nav>
+        </header>
+
+        <main class="main-card">
+            <h1 class="page-title">Projects</h1>
+            <p class="page-subtitle">A collection of data analysis, visualization, and research projects.</p>
+
+            <div class="projects-grid">
+                <!-- Featured Project: Data Visualization Dashboard -->
+                <div class="project-card featured">
+                    <div class="project-preview" style="background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);">
+                        <div class="preview-pattern"></div>
+                        <span class="preview-icon">📊</span>
+                    </div>
+                    <div class="project-content">
+                        <span class="project-badge" style="background: #6366f1;">Featured</span>
+                        <h3 class="project-title">Gambling & Mental Health Study</h3>
+                        <p class="project-description">
+                            Interactive data visualization dashboard exploring the relationship between gambling behaviors 
+                            and mental health indicators across 2,560 participants. Features 5 interactive charts with 
+                            filtering capabilities built with Plotly.js.
+                        </p>
+                        <div class="tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">Plotly.js</span>
+                            <span class="tag">Data Visualization</span>
+                            <span class="tag">Research</span>
+                            <span class="tag">n=2,560</span>
+                        </div>
+                        <a href="visualizations.html" class="project-link">
+                            View Dashboard
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project 2: Neuroimaging Pipeline -->
+                <div class="project-card featured">
+                    <div class="project-preview" style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);">
+                        <div class="preview-pattern"></div>
+                        <span class="preview-icon">🧠</span>
+                    </div>
+                    <div class="project-content">
+                        <span class="project-badge" style="background: #06b6d4;">Research</span>
+                        <h3 class="project-title">Neuroimaging Data Pipeline</h3>
+                        <p class="project-description">
+                            Automated cluster computing pipelines for processing 4TB+ neuroimaging datasets 
+                            using BIDS structure. Reduced processing time from weeks to hours.
+                        </p>
+                        <div class="tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">Bash</span>
+                            <span class="tag">BIDS</span>
+                            <span class="tag">HPC</span>
+                        </div>
+                        <a href="#" class="project-link">
+                            Learn More
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+</body>
+</html>

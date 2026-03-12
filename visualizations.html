@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gambling & Mental Health Study | Data Story</title>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:wght@600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --accent-alt: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --bg-dark: #0a0a12;
+            --bg-card: #12121f;
+            --bg-card-alt: #1a1a2e;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #64748b;
+            --border: rgba(255,255,255,0.06);
+            --glow: rgba(99, 102, 241, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        /* Ambient background */
+        .bg-ambient {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background: 
+                radial-gradient(ellipse 100% 70% at 10% 0%, rgba(99, 102, 241, 0.08), transparent 50%),
+                radial-gradient(ellipse 80% 50% at 90% 100%, rgba(139, 92, 246, 0.06), transparent 50%);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ========== HERO SECTION ========== */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 4rem 2rem;
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.25rem;
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--primary);
+            letter-spacing: 0.03em;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        .hero h1 {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(3rem, 7vw, 5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 650px;
+            margin-bottom: 1.0rem;
+        }
+
+        .hero-disclaimer {
+            font-size: 0.85rem;
+            color: #9ca3af;  /* lighter gray */
+            max-width: 600px;
+            font-style: italic;
+            margin-bottom: 1.0rem;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat-value {
+            font-family: 'Fraunces', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .hero-stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
+        }
+
+        /* ========== NAVIGATION ========== */
+        .nav-fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1rem 2rem;
+            background: rgba(10, 10, 18, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-fixed.visible {
+            transform: translateY(0);
+        }
+
+        .nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-family: 'Fraunces', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .nav-link {
+            padding: 0.5rem 1rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--text-primary);
+            background: rgba(255,255,255,0.05);
+        }
+
+        /* ========== STORY SECTIONS ========== */
+        .story-section {
+            min-height: 100vh;
+            padding: 6rem 0;
+            display: flex;
+            align-items: center;
+            border-top: 1px solid var(--border);
+        }
+
+        .story-section:first-of-type {
+            border-top: none;
+        }
+
+        .story-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.4fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .story-grid.reverse {
+            grid-template-columns: 1.4fr 1fr;
+        }
+
+        .story-grid.reverse .story-text {
+            order: 2;
+        }
+
+        .story-grid.reverse .story-viz {
+            order: 1;
+        }
+
+        @media (max-width: 1024px) {
+            .story-grid, .story-grid.reverse {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .story-grid .story-text,
+            .story-grid.reverse .story-text {
+                order: 1;
+            }
+            .story-grid .story-viz,
+            .story-grid.reverse .story-viz {
+                order: 2;
+            }
+        }
+
+        /* Text side */
+        .story-text {
+            max-width: 500px;
+        }
+
+        .section-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 12px;
+            font-family: 'Fraunces', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1.25rem;
+        }
+
+        .section-title {
+            font-family: 'Fraunces', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .section-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+
+        /* Insight bullets */
+        .insights-list {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .insights-list li {
+            position: relative;
+            padding-left: 1.75rem;
+            margin-bottom: 0.85rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .insights-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+
+        .insights-list li strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .insight-highlight {
+            display: inline-block;
+            padding: 0.75rem 1rem;
+            background: rgba(99, 102, 241, 0.1);
+            border-left: 3px solid var(--primary);
+            border-radius: 0 8px 8px 0;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        .insight-highlight strong {
+            color: var(--primary);
+        }
+
+        /* Viz side */
+        .story-viz {
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .story-viz:hover {
+            border-color: rgba(99, 102, 241, 0.2);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 40px var(--glow);
+        }
+
+        .viz-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .viz-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        .viz-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.15rem;
+        }
+
+        .viz-controls {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-group {
+            display: inline-flex;
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            padding: 3px;
+            border: 1px solid var(--border);
+        }
+
+        .btn-group button {
+            padding: 0.4rem 0.85rem;
+            border: none;
+            background: transparent;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .btn-group button:hover {
+            color: var(--text-secondary);
+        }
+
+        .btn-group button.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .chart-area {
+            padding: 1rem;
+            min-height: 350px;
+        }
+
+        .chart-area.tall {
+            min-height: 450px;
+        }
+
+        /* Demographics grid */
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            padding: 1rem;
+        }
+
+        .demo-chart {
+            background: var(--bg-card-alt);
+            border-radius: 12px;
+            padding: 1rem;
+            border: 1px solid var(--border);
+        }
+
+        .demo-chart-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        @media (max-width: 768px) {
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            padding: 4rem 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer h3 {
+            font-family: 'Fraunces', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .footer p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            padding: 0.6rem 1.25rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .footer-link:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        /* ========== LOADING STATE ========== */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .loading::after {
+            content: '';
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-left: 0.75rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ========== ANIMATIONS ========== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-ambient"></div>
+
+    <!-- Fixed Navigation -->
+    <nav class="nav-fixed" id="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">Cooper J. Sharp</a>
+            <div class="nav-links">
+                <a href="#geographic" class="nav-link">Geography</a>
+                <a href="#demographics" class="nav-link">Demographics</a>
+                <a href="#problem-gambling" class="nav-link">Problem Gambling</a>
+                <a href="#gambling-types" class="nav-link">Online vs Casino</a>
+                <a href="#age-gambling" class="nav-link">Age & Gambling</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-badge">Interactive Data Story</div>
+        <h1>Gambling & Mental Health<br>in America</h1>
+        <p class="hero-subtitle">
+            An exploration of gambling behaviors, demographic patterns, and mental health 
+            indicators across a diverse sample of American adults.
+        </p>
+        <p class="hero-disclaimer">
+            The following dataset is purely exploratory, does not make any causal statements, and is simply meant to provide a high-level overview of data collected as part of two separate studies. Please do not attempt to cite this data.
+        </p>
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <div class="hero-stat-value" id="hero-n">—</div>
+                <div class="hero-stat-label">Participants</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-value" id="hero-states">—</div>
+                <div class="hero-stat-label">US States</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-value" id="hero-age">—</div>
+                <div class="hero-stat-label">Age Range</div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span>Scroll to explore</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M19 12l-7 7-7-7"/>
+            </svg>
+        </div>
+    </section>
+
+    <div class="container">
+
+        <!-- Section 1: Geographic Distribution -->
+        <section class="story-section fade-in" id="geographic">
+            <div class="story-grid">
+                <div class="story-text">
+                    <div class="section-number">1</div>
+                    <h2 class="section-title">Where Is Our Data From?</h2>
+                    <p class="section-description">
+                        Our studies drew from a geographically diverse sample spanning the continental 
+                        United States. Participants were recruited from all 50 states, with concentrations 
+                        in major population centers.
+                    </p>
+                    <ul class="insights-list">
+                        <li>
+                            <!-- EDIT YOUR INSIGHTS HERE -->
+                            <strong>Distribution</strong> — CA, NY, TX, and FL, represent 32% of the sample -- accurate to the US population. 
+                        </li>
+                        <li>
+                            <!-- EDIT YOUR INSIGHTS HERE -->
+                            <strong>Legal Landscape</strong> — Our sample provides a diverse representation of geographic legality for retail and online gambling. 
+                        </li>
+                    </ul>
+                    <div class="insight-highlight">
+                        <!-- EDIT YOUR KEY TAKEAWAY HERE -->
+                        <strong>Key takeaway:</strong> Our sample is closely representative of the US population distribution.
+                    </div>
+                </div>
+                <div class="story-viz">
+                    <div class="viz-header">
+                        <div>
+                            <div class="viz-title">Participant Distribution by State</div>
+                            <div class="viz-subtitle">Hover for participant counts</div>
+                        </div>
+                    </div>
+                    <div class="chart-area" id="chart-geo">
+                        <div class="loading">Loading map</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Demographics -->
+        <section class="story-section fade-in" id="demographics">
+            <div class="story-grid reverse">
+                <div class="story-viz">
+                    <div class="viz-header">
+                        <div>
+                            <div class="viz-title">Sample Demographics</div>
+                            <div class="viz-subtitle">Age, gender, race, education, and income distributions</div>
+                        </div>
+                        <div class="viz-controls">
+                            <div class="btn-group" id="demo-filter">
+                                <button class="active" data-value="age">Age</button>
+                                <button data-value="gender">Gender</button>
+                                <button data-value="race">Race</button>
+                                <button data-value="education">Education</button>
+                                <button data-value="income">Income</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-area tall" id="chart-demo">
+                        <div class="loading">Loading demographics</div>
+                    </div>
+                </div>
+                <div class="story-text">
+                    <div class="section-number">2</div>
+                    <h2 class="section-title">Who Is in the Dataset?</h2>
+                    <p class="section-description">
+                        Understanding the demographic composition of our sample is essential for 
+                        interpreting findings and assessing generalizability. The total sample is comprised of three individual studies. 
+                    </p>
+                    <ul class="insights-list">
+                        <li>
+                            <!-- EDIT YOUR INSIGHTS HERE -->
+                            <strong>Age distribution</strong> — Ages are clustred due to sample targeting in the individual studies. 
+                        </li>
+                        <li>
+                            <!-- EDIT YOUR INSIGHTS HERE -->
+                            <strong>Gender breakdown</strong> — Gender is distributed consistent with the general US population. 
+                        </li>
+                        <li>
+                            <!-- EDIT YOUR INSIGHTS HERE -->
+                            <strong>Race composition</strong> — The studies targeted a diverse range of individuals. 
+                        </li>
+                        <li>
+                            <!-- EDIT YOUR INSIGHTS HERE -->
+                            <strong>Education levels</strong> — Most participants finished high school, with a large portion obtaining a college education. 
+                        </li>
+                        <li>
+                            <strong>Income distribution</strong> — Most of the sample earns less than the median US household income ($83,730; <a href="https://www.census.gov/library/publications/2025/demo/p60-282.html" target="_blank" style="color: #6366f1; text-decoration: underline;">U.S. Census Bureau, September 2025</a>)
+                        </li>
+                    </ul>
+                    <div class="insight-highlight">
+                        <!-- EDIT YOUR KEY TAKEAWAY HERE -->
+                        <strong>Key takeaway:</strong> The sample is diverse, yet representative. However, self-reported income is lower than expected. 
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Problem Gambling by State -->
+        <section class="story-section fade-in" id="problem-gambling">
+            <div class="story-grid">
+                <div class="story-text">
+                    <div class="section-number">3</div>
+                    <h2 class="section-title">Where Is Problem Gambling Most Common?</h2>
+                    <p class="section-description">
+                        Problem gambling rates vary significantly by state. This analysis identifies 
+                        geographic hotspots where intervention efforts may be most needed.
+                    </p>
+                    <ul class="insights-list">
+                        <li>
+                            <!-- EDIT YOUR INSIGHTS HERE -->
+                            <strong>Highest rate state</strong> — Nearly half (42.55%) of respondents from Alabama reported potential problem gambling. 
+                        </li>
+                        <li>
+                            <!-- EDIT YOUR INSIGHTS HERE -->
+                            <strong>Regional patterns</strong> — The US Southeast has 3 of the top 5 rates of problem gambling in our sample. 
+                        </li>
+                        <li>
+                            <!-- EDIT YOUR INSIGHTS HERE -->
+                            <strong>Comparison to national</strong> — Though national estimates are increasing, our sample revealed a far greater prevelance of problem gambling. We assume this is due to the bias of hosting via the internet. 
+                        </li>
+                    </ul>
+                    <div class="insight-highlight">
+                        <!-- EDIT YOUR KEY TAKEAWAY HERE -->
+                        <strong>Overall rate:</strong> <span id="overall-rate">—</span>% of participants 
+                        meet criteria for problem gambling (n=<span id="overall-problem-n">—</span>)
+                    </div>
+                </div>
+                <div class="story-viz">
+                    <div class="viz-header">
+                        <div>
+                            <div class="viz-title">Problem Gambling Rate by State</div>
+                            <div class="viz-subtitle">Top states by % of problem gamblers (min. 20 respondents)</div>
+                        </div>
+                    </div>
+                    <div class="chart-area" id="chart-problem">
+                        <div class="loading">Loading data</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Online vs Casino Gambling -->
+        <section class="story-section fade-in" id="gambling-types">
+            <div class="story-grid reverse">
+                <div class="story-viz">
+                    <div class="viz-header">
+                        <div>
+                            <div class="viz-title">Online vs. Casino Gambling Frequency</div>
+                            <div class="viz-subtitle">Mean gambling days in last 30 days by state</div>
+                        </div>
+                        <div class="viz-controls">
+                            <div class="btn-group" id="gambling-type-filter">
+                                <button class="active" data-value="comparison">Comparison</button>
+                                <button data-value="online">Top Online</button>
+                                <button data-value="casino">Top Casino</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-area tall" id="chart-gambling-type">
+                        <div class="loading">Loading data</div>
+                    </div>
+                </div>
+                <div class="story-text">
+                    <div class="section-number">4</div>
+                    <h2 class="section-title">Online vs. Casino: Which Dominates?</h2>
+                    <p class="section-description">
+                        The landscape of gambling is shifting from traditional casinos to online platforms. 
+                        This analysis compares the frequency of online and casino gambling across states.
+                    </p>
+                    <ul class="insights-list">
+                        <li>
+                            <!-- EDIT YOUR INSIGHTS HERE -->
+                            <strong>Overall trend</strong> — Online gambling is much more popular than casino gambling, potentially revealing an effect of convenience. 
+                        </li>
+                        <li>
+                            <!-- EDIT YOUR INSIGHTS HERE -->
+                            <strong>Top online states</strong> — VA, LA, and LI, preferred online or virtual gambling, all averaging >6 days per month. 
+                        </li>
+                        <li>
+                            <!-- EDIT YOUR INSIGHTS HERE -->
+                            <strong>Top casino states</strong> — AZ, CT, and IN, preferred physical or casino gambling, all averaging >2 days per month.
+                        </li>
+                    </ul>
+                    <div class="insight-highlight">
+                        <!-- EDIT YOUR KEY TAKEAWAY HERE -->
+                        <strong>National averages:</strong> Respondents spent roughly <span id="avg-online">—</span> days/month gambling virtually
+                        vs. <span id="avg-casino">—</span> days/month gambling at a casino or physically. 
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Age vs Gambling Frequency -->
+        <section class="story-section fade-in" id="age-gambling">
+            <div class="story-grid">
+                <div class="story-text">
+                    <div class="section-number">5</div>
+                    <h2 class="section-title">Does Age Affect Gambling Frequency?</h2>
+                    <p class="section-description">
+                        Examining the relationship between age and average gambling frequency 
+                        (combining online and casino gambling days per month) reveals patterns 
+                        across the lifespan.
+                    </p>
+                    <ul class="insights-list">
+                        <li>
+                            <!-- EDIT YOUR INSIGHTS HERE -->
+                            <strong>Age trend</strong> — Youger respondents were more likely to self-report gambling.
+                        </li>
+                    </ul>
+                    <div class="insight-highlight">
+                        <!-- EDIT YOUR KEY TAKEAWAY HERE -->
+                        <strong>Correlation:</strong> r = <span id="age-corr">—</span> between age and gambling frequency
+                    </div>
+                </div>
+                <div class="story-viz">
+                    <div class="viz-header">
+                        <div>
+                            <div class="viz-title">Age vs. Average Gambling Frequency</div>
+                            <div class="viz-subtitle">Days gambling per month (online + casino) / 2</div>
+                        </div>
+                    </div>
+                    <div class="chart-area tall" id="chart-age-gambling">
+                        <div class="loading">Loading data</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <h3>Continue Exploring</h3>
+            <p>
+                This data story is part of ongoing research at the Temple University Neuroeconomics Lab 
+                examining the intersection of gambling behaviors and mental health.
+            </p>
+            <div class="footer-links">
+                <a href="index.html" class="footer-link">← Back to Portfolio</a>
+                <a href="resume.html" class="footer-link">View Resume</a>
+                <a href="projects.html" class="footer-link">All Projects</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================
+        // CONFIGURATION
+        // ============================================
+        
+        const DATA_PATH = 'viz_data/';  // Path to your JSON files
+        
+        const chartConfig = {
+            responsive: true,
+            displayModeBar: false
+        };
+
+        const darkTheme = {
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            font: { 
+                family: 'DM Sans, sans-serif', 
+                color: '#94a3b8',
+                size: 12
+            },
+            margin: { l: 80, r: 100, t: 80, b: 80 },
+            hoverlabel: {
+                bgcolor: '#1a1a2e',
+                bordercolor: 'rgba(255,255,255,0.1)',
+                font: { family: 'DM Sans', color: '#f8fafc' }
+            }
+        };
+
+        const colors = {
+            primary: '#6366f1',
+            secondary: '#8b5cf6',
+            accent: '#ec4899',
+            cyan: '#06b6d4',
+            success: '#10b981',
+            warning: '#f59e0b',
+            gradient: ['#6366f1', '#8b5cf6', '#a855f7', '#d946ef', '#ec4899']
+        };
+
+        // ============================================
+        // DATA LOADING
+        // ============================================
+        
+        let geoData, demoData, problemData, gamblingData, ageGamblingData;
+
+        async function loadAllData() {
+            try {
+                const [geo, demo, problem, gambling, ageGambling] = await Promise.all([
+                    fetch(DATA_PATH + 'geographic.json').then(r => r.json()),
+                    fetch(DATA_PATH + 'demographics.json').then(r => r.json()),
+                    fetch(DATA_PATH + 'problem_gambling_states.json').then(r => r.json()),
+                    fetch(DATA_PATH + 'gambling_comparison.json').then(r => r.json()),
+                    fetch(DATA_PATH + 'age_gambling_scatter.json').then(r => r.json())
+                ]);
+                
+                geoData = geo;
+                demoData = demo;
+                problemData = problem;
+                gamblingData = gambling;
+                ageGamblingData = ageGambling;
+                
+                // Update hero stats
+                document.getElementById('hero-n').textContent = geoData.total.toLocaleString();
+                document.getElementById('hero-states').textContent = geoData.states.length;
+                document.getElementById('hero-age').textContent = `${demoData.age.min}-${demoData.age.max}`;
+                
+                // Update inline stats
+                document.getElementById('overall-rate').textContent = problemData.overall_rate;
+                document.getElementById('overall-problem-n').textContent = problemData.overall_problem_count.toLocaleString();
+                document.getElementById('avg-online').textContent = gamblingData.online.mean;
+                document.getElementById('avg-casino').textContent = gamblingData.casino.mean;
+                document.getElementById('age-corr').textContent = ageGamblingData.overall.correlation;
+                
+                // Render all charts
+                document.querySelectorAll('.loading').forEach(el => el.remove());
+                renderGeoChart();
+                renderDemoChart('age');
+                renderProblemChart();
+                renderGamblingTypeChart('comparison');
+                renderAgeGamblingChart();
+                
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.querySelectorAll('.loading').forEach(el => {
+                    el.textContent = 'Error loading data. Check console.';
+                });
+            }
+        }
+
+        // ============================================
+        // CHART 1: Geographic Choropleth
+        // ============================================
+        
+        function renderGeoChart() {
+            const trace = {
+                type: 'choropleth',
+                locationmode: 'USA-states',
+                locations: geoData.states,
+                z: geoData.counts,
+                text: geoData.state_names,
+                colorscale: [
+                    [0, 'rgba(99, 102, 241, 0.15)'],
+                    [0.25, 'rgba(99, 102, 241, 0.4)'],
+                    [0.5, 'rgba(139, 92, 246, 0.6)'],
+                    [0.75, 'rgba(168, 85, 247, 0.8)'],
+                    [1, 'rgba(236, 72, 153, 1)']
+                ],
+                colorbar: {
+                    title: { text: 'n', font: { color: '#94a3b8', size: 11 } },
+                    tickfont: { color: '#64748b', size: 10 },
+                    thickness: 12,
+                    len: 0.5,
+                    bgcolor: 'rgba(0,0,0,0)',
+                    borderwidth: 0
+                },
+                marker: { line: { color: 'rgba(255,255,255,0.1)', width: 0.5 } },
+                hovertemplate: '<b>%{text}</b><br>Participants: %{z}<extra></extra>'
+            };
+
+            const layout = {
+                geo: {
+                    scope: 'usa',
+                    bgcolor: 'rgba(0,0,0,0)',
+                    showlakes: false,
+                    landcolor: 'rgba(255,255,255,0.02)',
+                    subunitcolor: 'rgba(255,255,255,0.08)',
+                    showframe: false,
+                    projection: { type: 'albers usa' }
+                },
+                ...darkTheme,
+                margin: { l: 10, r: 100, t: 10, b: 10 }
+            };
+
+            Plotly.newPlot('chart-geo', [trace], layout, chartConfig);
+        }
+
+        // ============================================
+        // CHART 2: Demographics
+        // ============================================
+        
+        let currentDemoView = 'age';
+
+        function renderDemoChart(view) {
+            currentDemoView = view;
+            let traces, layout;
+
+            if (view === 'age') {
+                traces = [{
+                    x: demoData.age.values,
+                    type: 'histogram',
+                    nbinsx: 30,
+                    marker: { 
+                        color: colors.primary,
+                        line: { color: 'rgba(255,255,255,0.1)', width: 1 }
+                    },
+                    hovertemplate: '<b>Age:</b> %{x}<br><b>Count:</b> %{y}<extra></extra>'
+                }];
+                layout = {
+                    ...darkTheme,
+                    xaxis: { 
+                        title: { text: 'Age (years)', font: { size: 11, color: '#64748b' } },
+                        gridcolor: 'rgba(255,255,255,0.03)'
+                    },
+                    yaxis: { 
+                        title: { text: 'Frequency', font: { size: 11, color: '#64748b' } },
+                        gridcolor: 'rgba(255,255,255,0.03)'
+                    },
+                    shapes: [
+                        // Mean line (solid)
+                        {
+                            type: 'line',
+                            x0: demoData.age.mean,
+                            x1: demoData.age.mean,
+                            y0: 0,
+                            y1: 1,
+                            yref: 'paper',
+                            line: { color: '#ec4899', width: 2 }
+                        },
+                        // Median line (dashed)
+                        {
+                            type: 'line',
+                            x0: demoData.age.median,
+                            x1: demoData.age.median,
+                            y0: 0,
+                            y1: 1.2,
+                            yref: 'paper',
+                            line: { color: '#06b6d4', width: 2, dash: 'dash' }
+                        }
+                    ],
+                    annotations: [
+                        {
+                            x: demoData.age.mean,
+                            y: 1,
+                            yref: 'paper',
+                            text: `Mean: ${demoData.age.mean}`,
+                            showarrow: false,
+                            yanchor: 'bottom',
+                            font: { size: 11, color: '#ec4899' }
+                        },
+                        {
+                            x: demoData.age.median,
+                            y: 1.2,
+                            yref: 'paper',
+                            text: `Median: ${demoData.age.median}`,
+                            showarrow: false,
+                            yanchor: 'bottom',
+                            font: { size: 11, color: '#06b6d4' }
+                        }
+                    ]
+                };
+
+            } else if (view === 'gender') {
+                traces = [{
+                    labels: demoData.gender.labels,
+                    values: demoData.gender.values,
+                    type: 'pie',
+                    hole: 0.5,
+                    marker: { 
+                        colors: [colors.primary, colors.accent, colors.cyan, '#64748b'],
+                        line: { color: '#12121f', width: 2 }
+                    },
+                    textinfo: 'percent+label',
+                    textposition: 'outside',
+                    textfont: { size: 11, color: '#94a3b8' },
+                    hovertemplate: '<b>%{label}</b><br>n = %{value}<br>%{percent}<extra></extra>'
+                }];
+                layout = {
+                    ...darkTheme,
+                    showlegend: false,
+                    margin: { l: 80, r: 80, t: 80, b: 80 }
+                };
+            } else if (view === 'race') {
+                traces = [{
+                    y: demoData.race.labels,
+                    x: demoData.race.values,
+                    type: 'bar',
+                    orientation: 'h',
+                    marker: { 
+                        color: colors.secondary,
+                        line: { color: 'rgba(255,255,255,0.1)', width: 1 }
+                    },
+                    hovertemplate: '<b>%{y}</b><br>n = %{x}<extra></extra>'
+                }];
+                layout = {
+                    ...darkTheme,
+                    xaxis: { 
+                        title: { text: 'Count', font: { size: 11, color: '#64748b' } },
+                        gridcolor: 'rgba(255,255,255,0.03)'
+                    },
+                    yaxis: { 
+                        gridcolor: 'rgba(255,255,255,0.03)',
+                        tickfont: { size: 10 },
+                        automargin: true
+                    },
+                    margin: { l: 150, r: 30, t: 20, b: 50 }
+                };
+            } else if (view === 'education') {
+                traces = [{
+                    x: demoData.education.labels,
+                    y: demoData.education.values,
+                    type: 'bar',
+                    marker: { 
+                        color: demoData.education.values.map((v, i) => 
+                            `rgba(99, 102, 241, ${0.4 + (i / demoData.education.values.length) * 0.6})`
+                        ),
+                        line: { color: 'rgba(255,255,255,0.1)', width: 1 }
+                    },
+                    hovertemplate: '<b>%{x}</b><br>n = %{y}<extra></extra>'
+                }];
+                layout = {
+                    ...darkTheme,
+                    xaxis: { 
+                        tickangle: -30,
+                        tickfont: { size: 10 },
+                        gridcolor: 'rgba(255,255,255,0.03)'
+                    },
+                    yaxis: { 
+                        title: { text: 'Count', font: { size: 11, color: '#64748b' } },
+                        gridcolor: 'rgba(255,255,255,0.03)'
+                    },
+                    margin: { l: 50, r: 30, t: 20, b: 100 }
+                };
+            } else if (view === 'income') {
+                // Show both household and personal income
+                traces = [
+                    {
+                        x: demoData.household_income.labels,
+                        y: demoData.household_income.values,
+                        name: 'Household',
+                        type: 'bar',
+                        marker: { color: colors.primary },
+                        hovertemplate: '<b>Household %{x}</b><br>n = %{y}<extra></extra>'
+                    },
+                    {
+                        x: demoData.personal_income.labels,
+                        y: demoData.personal_income.values,
+                        name: 'Personal',
+                        type: 'bar',
+                        marker: { color: colors.accent },
+                        hovertemplate: '<b>Personal %{x}</b><br>n = %{y}<extra></extra>'
+                    }
+                ];
+                layout = {
+                    ...darkTheme,
+                    barmode: 'group',
+                    xaxis: { 
+                        tickangle: -30,
+                        tickfont: { size: 10 },
+                        gridcolor: 'rgba(255,255,255,0.03)'
+                    },
+                    yaxis: { 
+                        title: { text: 'Count', font: { size: 11, color: '#64748b' } },
+                        gridcolor: 'rgba(255,255,255,0.03)'
+                    },
+                    legend: {
+                        orientation: 'h',
+                        y: 1.1,
+                        x: 0.5,
+                        xanchor: 'center',
+                        font: { size: 11, color: '#94a3b8' }
+                    },
+                    margin: { l: 50, r: 30, t: 40, b: 100 }
+                };
+            }
+
+            Plotly.react('chart-demo', traces, layout, chartConfig);
+        }
+
+        // Demographics filter buttons
+        document.querySelectorAll('#demo-filter button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('#demo-filter button').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                renderDemoChart(this.dataset.value);
+            });
+        });
+
+        // ============================================
+        // CHART 3: Problem Gambling by State
+        // ============================================
+        
+        function renderProblemChart() {
+            // Show top 5 states
+            const topN = 5;
+            const states = problemData.states.slice(0, topN).reverse();
+            const rates = problemData.rates.slice(0, topN).reverse();
+            const totals = problemData.totals.slice(0, topN).reverse();
+
+            const trace = {
+                y: states,
+                x: rates,
+                type: 'bar',
+                orientation: 'h',
+                marker: {
+                    color: rates.map((r, i) => 
+                        `rgba(236, 72, 153, ${0.5 + (i / topN) * 0.5})`
+                    ),
+                    line: { color: 'rgba(255,255,255,0.1)', width: 1 }
+                },
+                text: rates.map(r => r + '%'),
+                textposition: 'outside',
+                textfont: { color: '#94a3b8', size: 11 },
+                hovertemplate: '<b>%{y}</b><br>Rate: %{x}%<br>n = %{customdata}<extra></extra>',
+                customdata: totals
+            };
+
+            const layout = {
+                ...darkTheme,
+                xaxis: {
+                    title: { text: 'Problem Gambling Rate (%)', font: { size: 11, color: '#64748b' } },
+                    gridcolor: 'rgba(255,255,255,0.03)',
+                    range: [0, Math.max(...rates) * 1.3]
+                },
+                yaxis: {
+                    gridcolor: 'rgba(255,255,255,0.03)',
+                    tickfont: { size: 11 }
+                },
+                margin: { l: 120, r: 50, t: 20, b: 50 }
+            };
+
+            Plotly.newPlot('chart-problem', [trace], layout, chartConfig);
+        }
+
+        // ============================================
+        // CHART 4: Online vs Casino Gambling
+        // ============================================
+        
+        let currentGamblingView = 'comparison';
+
+        function renderGamblingTypeChart(view) {
+            currentGamblingView = view;
+            let traces, layout;
+
+            if (view === 'comparison') {
+                // Overall distribution comparison
+                traces = [
+                    {
+                        x: gamblingData.online.values.filter(v => v > 0),
+                        name: 'Online',
+                        type: 'histogram',
+                        xbins: { size: 3 },
+                        opacity: 0.7,
+                        marker: { color: colors.primary },
+                        hovertemplate: '<b>Online</b><br>Days: %{x}<br>Count: %{y}<extra></extra>'
+                    },
+                    {
+                        x: gamblingData.casino.values.filter(v => v > 0),
+                        name: 'Casino',
+                        type: 'histogram',
+                        xbins: { size: 3 },
+                        opacity: 0.7,
+                        marker: { color: colors.accent },
+                        hovertemplate: '<b>Casino</b><br>Days: %{x}<br>Count: %{y}<extra></extra>'
+                    }
+                ];
+                layout = {
+                    ...darkTheme,
+                    barmode: 'overlay',
+                    xaxis: {
+                        title: { text: 'Days Gambling in Last 30 Days', font: { size: 11, color: '#64748b' } },
+                        gridcolor: 'rgba(255,255,255,0.03)'
+                    },
+                    yaxis: {
+                        title: { text: 'Frequency', font: { size: 11, color: '#64748b' } },
+                        gridcolor: 'rgba(255,255,255,0.03)'
+                    },
+                    legend: {
+                        orientation: 'h',
+                        y: 1.1,
+                        x: 0.5,
+                        xanchor: 'center',
+                        font: { size: 11, color: '#94a3b8' }
+                    },
+                    margin: { l: 80, r: 80, t: 40, b: 80 }
+                };
+            } else if (view === 'online') {
+                // Top states preferring online
+                const data = gamblingData.top_online_states;
+                traces = [
+                    {
+                        y: data.states.slice().reverse(),
+                        x: data.online_means.slice().reverse(),
+                        name: 'Online',
+                        type: 'bar',
+                        orientation: 'h',
+                        marker: { color: colors.primary },
+                        hovertemplate: '<b>%{y}</b><br>Online: %{x} days<extra></extra>'
+                    }
+                ];
+                layout = {
+                    ...darkTheme,
+                    barmode: 'group',
+                    xaxis: {
+                        title: { text: 'Mean Days/Month', font: { size: 11, color: '#64748b' } },
+                        gridcolor: 'rgba(255,255,255,0.03)'
+                    },
+                    yaxis: {
+                        tickfont: { size: 11 },
+                        automargin: true,
+                        ticksuffix: '   '  // adds spaces after label, before bar
+                    },
+                    legend: {
+                        orientation: 'h',
+                        y: 1.1,
+                        x: 0.5,
+                        xanchor: 'center',
+                        font: { size: 11, color: '#94a3b8' }
+                    },
+                    margin: { l: 80, r: 80, t: 20, b: 80 }
+                };
+            } else if (view === 'casino') {
+                const data = gamblingData.top_casino_states;
+                // Pair, sort ascending by value (so highest appears at top)
+                const paired = data.states.map((state, i) => ({ state, value: data.casino_means[i] }));
+                paired.sort((a, b) => a.value - b.value);
+                
+                traces = [
+                    {
+                        y: paired.map(p => p.state),
+                        x: paired.map(p => p.value),
+                        name: 'Casino',
+                        type: 'bar',
+                        orientation: 'h',
+                        marker: { color: '#ec4899' },
+                        hovertemplate: '<b>%{y}</b><br>Casino: %{x} days<extra></extra>'
+                    }
+                ];
+                layout = {
+                    ...darkTheme,
+                    barmode: 'group',
+                    xaxis: {
+                        title: { text: 'Mean Days/Month', font: { size: 11, color: '#64748b' } },
+                        gridcolor: 'rgba(255,255,255,0.03)'
+                    },
+                    yaxis: {
+                        tickfont: { size: 11 },
+                        automargin: true,
+                        ticksuffix: '   '  // adds spaces after label, before bar
+                    },
+                    legend: {
+                        orientation: 'h',
+                        y: 1.1,
+                        x: 0.5,
+                        xanchor: 'center',
+                        font: { size: 11, color: '#94a3b8' }
+                    },
+                    margin: { l: 80, r: 80, t: 20, b: 80 }
+                };
+            }
+
+            Plotly.react('chart-gambling-type', traces, layout, chartConfig);
+        }
+
+        // Gambling type filter buttons
+        document.querySelectorAll('#gambling-type-filter button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('#gambling-type-filter button').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                renderGamblingTypeChart(this.dataset.value);
+            });
+        });
+
+        // ============================================
+        // CHART 5: Age vs Gambling Frequency Scatter
+        // ============================================
+        
+        function renderAgeGamblingChart() {
+            // Combine all data
+            const allAge = [...ageGamblingData.non_problem.age, ...ageGamblingData.problem.age];
+            const allFreq = [...ageGamblingData.non_problem.gambling_freq, ...ageGamblingData.problem.gambling_freq];
+            
+            // Calculate linear regression
+            const n = allAge.length;
+            const sumX = allAge.reduce((a, b) => a + b, 0);
+            const sumY = allFreq.reduce((a, b) => a + b, 0);
+            const sumXY = allAge.reduce((total, x, i) => total + x * allFreq[i], 0);
+            const sumX2 = allAge.reduce((total, x) => total + x * x, 0);
+            
+            const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+            const intercept = (sumY - slope * sumX) / n;
+            
+            const minAge = Math.min(...allAge);
+            const maxAge = Math.max(...allAge);
+            
+            const traces = [
+                {
+                    x: allAge,
+                    y: allFreq,
+                    mode: 'markers',
+                    type: 'scatter',
+                    name: 'Participants',
+                    showlegend: false,
+                    marker: {
+                        color: colors.primary,
+                        size: 5,
+                        opacity: 0.4,
+                        line: { color: 'rgba(255,255,255,0.1)', width: 0.5 }
+                    },
+                    hovertemplate: 'Age: %{x}<br>Avg Days/Month: %{y:.1f}<extra></extra>'
+                },
+                {
+                    x: [minAge, maxAge],
+                    y: [slope * minAge + intercept, slope * maxAge + intercept],
+                    mode: 'lines',
+                    type: 'scatter',
+                    name: `Trend (r = ${ageGamblingData.overall.correlation})`,
+                    line: {
+                        color: '#ec4899',
+                        width: 3
+                    },
+                    hoverinfo: 'skip'
+                }
+            ];
+
+            const layout = {
+                ...darkTheme,
+                xaxis: {
+                    title: { text: 'Age (years)', font: { size: 11, color: '#64748b' } },
+                    gridcolor: 'rgba(255,255,255,0.03)',
+                    zeroline: false
+                },
+                yaxis: {
+                    title: { text: 'Avg Gambling Days/Month', font: { size: 11, color: '#64748b' } },
+                    gridcolor: 'rgba(255,255,255,0.03)',
+                    zeroline: false
+                },
+                legend: {
+                    orientation: 'h',
+                    y: 1.12,
+                    x: 0.5,
+                    xanchor: 'center',
+                    font: { size: 11, color: '#94a3b8' }
+                },
+                margin: { l: 60, r: 30, t: 50, b: 50 }
+            };
+
+            Plotly.newPlot('chart-age-gambling', traces, layout, chartConfig);
+        }
+
+        // ============================================
+        // SCROLL ANIMATIONS & NAVIGATION
+        // ============================================
+        
+        // Intersection Observer for fade-in animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Show/hide fixed nav based on scroll
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('nav');
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 500) {
+                nav.classList.add('visible');
+            } else {
+                nav.classList.remove('visible');
+            }
+            
+            lastScroll = currentScroll;
+        });
+
+        // Resize charts on window resize
+        window.addEventListener('resize', () => {
+            ['chart-geo', 'chart-demo', 'chart-problem', 'chart-gambling-type', 'chart-age-gambling'].forEach(id => {
+                Plotly.Plots.resize(id);
+            });
+        });
+
+        // ============================================
+        // INITIALIZE
+        // ============================================
+        
+        document.addEventListener('DOMContentLoaded', loadAllData);
+    </script>
+</body>
+</html>
