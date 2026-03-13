@@ -553,6 +553,67 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        /* Stats panel for regression results */
+        .stats-panel {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border);
+            background: rgba(0,0,0,0.2);
+        }
+
+        .stats-group {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.75rem;
+            background: var(--bg-card-alt);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .stats-group-title {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .stats-group.high-sr .stats-group-title {
+            color: var(--accent);
+        }
+
+        .stats-group.low-sr .stats-group-title {
+            color: var(--accent-alt);
+        }
+
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            padding: 0.2rem 0;
+        }
+
+        .stats-label {
+            color: var(--text-muted);
+        }
+
+        .stats-value {
+            color: var(--text-primary);
+            font-weight: 500;
+            font-family: 'SF Mono', 'Consolas', monospace;
+        }
+
+        .stats-value.significant {
+            color: var(--success);
+        }
+
+        .stats-value.not-significant {
+            color: var(--text-muted);
+        }
     </style>
 </head>
 <body>
@@ -568,6 +629,7 @@
                 <a href="#problem-gambling" class="nav-link">Problem Gambling</a>
                 <a href="#gambling-types" class="nav-link">Online vs Casino</a>
                 <a href="#age-gambling" class="nav-link">Age & Gambling</a>
+                <a href="#mental-health" class="nav-link">Mental Health</a>
             </div>
         </div>
     </nav>
@@ -837,6 +899,61 @@
             </div>
         </section>
 
+        <!-- Section 6: Mental Health & Gambling Severity -->
+        <section class="story-section fade-in" id="mental-health">
+            <div class="story-grid">
+                <div class="story-text">
+                    <div class="section-number">6</div>
+                    <h2 class="section-title">Mental Health & Gambling Severity</h2>
+                    <p class="section-description">
+                        Examining the relationships between gambling severity (GSAS) and mental health 
+                        indicators, controlling for age, gender, and reward sensitivity (SPSRQ).
+                    </p>
+                    <ul class="insights-list">
+                        <li>
+                            <strong>Depression</strong> — <span id="depression-insight">Loading...</span>
+                        </li>
+                        <li>
+                            <strong>Mania</strong> — <span id="mania-insight">Loading...</span>
+                        </li>
+                        <li>
+                            <strong>Cannabis</strong> — <span id="cannabis-insight">Loading...</span>
+                        </li>
+                    </ul>
+                    <div class="insight-highlight">
+                        <strong>Note:</strong> Statistics shown are partial effects of GSAS after 
+                        controlling for age, gender, and reward sensitivity (SPSRQ-SR). The regression 
+                        line shows predicted values with covariates held at their means.
+                    </div>
+                </div>
+                <div class="story-viz">
+                    <div class="viz-header">
+                        <div>
+                            <div class="viz-title">Gambling Severity → <span id="outcome-title">Depression</span></div>
+                            <div class="viz-subtitle">Controlling for age, gender, and reward sensitivity</div>
+                        </div>
+                        <div class="viz-controls">
+                            <div class="btn-group" id="outcome-toggle">
+                                <button class="active" data-value="depression">Depression</button>
+                                <button data-value="mania">Mania</button>
+                                <button data-value="cannabis">Cannabis</button>
+                            </div>
+                            <div class="btn-group" id="dots-toggle">
+                                <button class="active" data-value="hide">Line Only</button>
+                                <button data-value="show">Show Data</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-area tall" id="chart-mental-health">
+                        <div class="loading">Loading data</div>
+                    </div>
+                    <div class="stats-panel" id="stats-mental-health">
+                        <!-- Stats will be inserted here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </div>
 
     <!-- Footer -->
@@ -899,16 +1016,17 @@
         // DATA LOADING
         // ============================================
         
-        let geoData, demoData, problemData, gamblingData, ageGamblingData;
+        let geoData, demoData, problemData, gamblingData, ageGamblingData, moderationData;
 
         async function loadAllData() {
             try {
-                const [geo, demo, problem, gambling, ageGambling] = await Promise.all([
+                const [geo, demo, problem, gambling, ageGambling, moderation] = await Promise.all([
                     fetch(DATA_PATH + 'geographic.json').then(r => r.json()),
                     fetch(DATA_PATH + 'demographics.json').then(r => r.json()),
                     fetch(DATA_PATH + 'problem_gambling_states.json').then(r => r.json()),
                     fetch(DATA_PATH + 'gambling_comparison.json').then(r => r.json()),
-                    fetch(DATA_PATH + 'age_gambling_scatter.json').then(r => r.json())
+                    fetch(DATA_PATH + 'age_gambling_scatter.json').then(r => r.json()),
+                    fetch(DATA_PATH + 'moderation_analysis.json').then(r => r.json())
                 ]);
                 
                 geoData = geo;
@@ -916,6 +1034,7 @@
                 problemData = problem;
                 gamblingData = gambling;
                 ageGamblingData = ageGambling;
+                moderationData = moderation;
                 
                 // Update hero stats
                 document.getElementById('hero-n').textContent = geoData.total.toLocaleString();
@@ -936,6 +1055,10 @@
                 renderProblemChart();
                 renderGamblingTypeChart('comparison');
                 renderAgeGamblingChart();
+                
+                // Render mental health chart
+                renderMentalHealthChart();
+                updateInsights();
                 
             } catch (error) {
                 console.error('Error loading data:', error);
@@ -1490,6 +1613,219 @@
         }
 
         // ============================================
+        // MODERATION REGRESSION CHART
+        // ============================================
+
+        // Track state for the chart
+        const chartState = {
+            outcome: 'depression',
+            showDots: false
+        };
+
+        function formatPValue(p) {
+            if (p < 0.001) return '< .001';
+            if (p < 0.01) return '< .01';
+            if (p < 0.05) return '< .05';
+            return p.toFixed(3);
+        }
+
+        function renderMentalHealthChart() {
+            const outcome = chartState.outcome;
+            const data = moderationData[outcome];
+            if (!data) return;
+            
+            const showDots = chartState.showDots;
+            
+            let traces = [];
+            
+            // Scatter points (conditionally shown)
+            if (showDots) {
+                traces.push({
+                    x: data.scatter.x,
+                    y: data.scatter.y,
+                    mode: 'markers',
+                    type: 'scatter',
+                    name: 'Participants',
+                    showlegend: false,
+                    marker: {
+                        color: colors.primary,
+                        size: 5,
+                        opacity: 0.3,
+                        line: { color: 'rgba(255,255,255,0.1)', width: 0.5 }
+                    },
+                    hovertemplate: 'GSAS: %{x:.1f}<br>Score: %{y:.2f}<extra></extra>'
+                });
+            }
+            
+            if (data.overall) {
+                // CI band (lower bound)
+                traces.push({
+                    x: data.overall.line_x,
+                    y: data.overall.ci_lower,
+                    mode: 'lines',
+                    type: 'scatter',
+                    name: '95% CI',
+                    line: { color: 'transparent' },
+                    showlegend: false,
+                    hoverinfo: 'skip'
+                });
+                
+                // CI band (upper bound with fill)
+                traces.push({
+                    x: data.overall.line_x,
+                    y: data.overall.ci_upper,
+                    mode: 'lines',
+                    type: 'scatter',
+                    fill: 'tonexty',
+                    fillcolor: 'rgba(236, 72, 153, 0.2)',
+                    line: { color: 'transparent' },
+                    showlegend: false,
+                    hoverinfo: 'skip'
+                });
+                
+                // Regression line
+                traces.push({
+                    x: data.overall.line_x,
+                    y: data.overall.line_y,
+                    mode: 'lines',
+                    type: 'scatter',
+                    name: `β = ${data.overall.beta}`,
+                    line: { color: '#ec4899', width: 3 },
+                    hoverinfo: 'skip'
+                });
+            }
+            
+            // Update stats panel
+            const statsContainer = document.getElementById('stats-mental-health');
+            if (statsContainer && data.overall) {
+                const s = data.overall;
+                const sigClass = s.p < 0.05 ? 'significant' : 'not-significant';
+                
+                statsContainer.innerHTML = `
+                    <div class="stats-group">
+                        <div class="stats-group-title">GSAS Effect (n = ${s.n.toLocaleString()})</div>
+                        <div class="stats-row">
+                            <span class="stats-label">Partial r</span>
+                            <span class="stats-value">${s.r}</span>
+                        </div>
+                        <div class="stats-row">
+                            <span class="stats-label">β (GSAS)</span>
+                            <span class="stats-value">${s.beta} ± ${s.se_beta}</span>
+                        </div>
+                        <div class="stats-row">
+                            <span class="stats-label">p-value</span>
+                            <span class="stats-value ${sigClass}">${formatPValue(s.p)}</span>
+                        </div>
+                        <div class="stats-row">
+                            <span class="stats-label">Model R²</span>
+                            <span class="stats-value">${s.r_squared}</span>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Update title
+            const titleMap = {
+                depression: 'Depression',
+                mania: 'Mania',
+                cannabis: 'Cannabis Use'
+            };
+            document.getElementById('outcome-title').textContent = titleMap[outcome];
+            
+            // Calculate axis ranges with padding
+            const xMin = Math.min(...data.scatter.x);
+            const xMax = Math.max(...data.scatter.x);
+            const xPad = (xMax - xMin) * 0.05;
+            
+            // For y, consider CI bounds if available
+            let yVals = data.scatter.y;
+            if (data.overall && data.overall.ci_lower && data.overall.ci_upper) {
+                yVals = [...data.scatter.y, ...data.overall.ci_lower, ...data.overall.ci_upper];
+            }
+            const yMin = Math.min(...yVals);
+            const yMax = Math.max(...yVals);
+            const yPad = (yMax - yMin) * 0.08;
+            
+            const layout = {
+                ...darkTheme,
+                xaxis: {
+                    title: { text: 'Gambling Severity (GSAS Total)', font: { size: 11, color: '#64748b' } },
+                    fixedrange: true,
+                    gridcolor: 'rgba(255,255,255,0.03)',
+                    zeroline: false,
+                    automargin: true,
+                    range: [xMin - xPad, xMax + xPad]
+                },
+                yaxis: {
+                    title: { text: data.label, font: { size: 11, color: '#64748b' } },
+                    fixedrange: true,
+                    gridcolor: 'rgba(255,255,255,0.03)',
+                    zeroline: true,
+                    zerolinecolor: 'rgba(255,255,255,0.1)',
+                    zerolinewidth: 1,
+                    automargin: true,
+                    range: [yMin - yPad, yMax + yPad]
+                },
+                legend: {
+                    orientation: 'h',
+                    y: 1.12,
+                    x: 0.5,
+                    xanchor: 'center',
+                    font: { size: 10, color: '#94a3b8' }
+                },
+                margin: { l: 70, r: 30, t: 50, b: 60 }
+            };
+            
+            Plotly.react('chart-mental-health', traces, layout, chartConfig);
+        }
+
+        function updateInsights() {
+            // Depression insight
+            const dep = moderationData.depression;
+            if (dep && dep.overall) {
+                const direction = dep.overall.beta > 0 ? 'positive' : 'negative';
+                document.getElementById('depression-insight').textContent = 
+                    `${direction} partial association (r = ${dep.overall.r}, p ${formatPValue(dep.overall.p)})`;
+            }
+            
+            // Mania insight
+            const man = moderationData.mania;
+            if (man && man.overall) {
+                const direction = man.overall.beta > 0 ? 'positive' : 'negative';
+                document.getElementById('mania-insight').textContent = 
+                    `${direction} partial association (r = ${man.overall.r}, p ${formatPValue(man.overall.p)})`;
+            }
+            
+            // Cannabis insight
+            const can = moderationData.cannabis;
+            if (can && can.overall) {
+                const direction = can.overall.beta > 0 ? 'positive' : 'negative';
+                document.getElementById('cannabis-insight').textContent = 
+                    `${direction} partial association (r = ${can.overall.r}, p ${formatPValue(can.overall.p)})`;
+            }
+        }
+
+        // Outcome toggle (Depression / Mania / Cannabis)
+        document.querySelectorAll('#outcome-toggle button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('#outcome-toggle button').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                chartState.outcome = this.dataset.value;
+                renderMentalHealthChart();
+            });
+        });
+        
+        // Dots toggle (Line Only / Show Data)
+        document.querySelectorAll('#dots-toggle button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('#dots-toggle button').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                chartState.showDots = (this.dataset.value === 'show');
+                renderMentalHealthChart();
+            });
+        });
+
+        // ============================================
         // SCROLL ANIMATIONS & NAVIGATION
         // ============================================
         
@@ -1521,7 +1857,7 @@
 
         // Resize charts on window resize
         window.addEventListener('resize', () => {
-            ['chart-geo', 'chart-demo', 'chart-problem', 'chart-gambling-type', 'chart-age-gambling'].forEach(id => {
+            ['chart-geo', 'chart-demo', 'chart-problem', 'chart-gambling-type', 'chart-age-gambling', 'chart-mental-health'].forEach(id => {
                 Plotly.Plots.resize(id);
             });
         });

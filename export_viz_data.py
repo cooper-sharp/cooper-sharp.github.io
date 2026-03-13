@@ -343,17 +343,158 @@ with open('viz_data/age_gambling_scatter.json', 'w') as f:
 print(f"  ✓ Age vs gambling frequency data exported (n={len(scatter_df):,})")
 
 # ============================================
-# SUMMARY
+# 6. MENTAL HEALTH REGRESSION DATA
+# (GSAS → Depression/Mania/Cannabis, controlling for age, gender, SPSRQ)
 # ============================================
-print("\n" + "="*50)
-print("✅ ALL DATA EXPORTED SUCCESSFULLY!")
-print("="*50)
+print("\n[6/6] Exporting mental health regression data...")
+
+import statsmodels.api as sm
+from scipy import stats
+
+# Prepare data
+df['gsas_total'] = pd.to_numeric(df['gsas_total'], errors='coerce')
+df['susd_depression'] = pd.to_numeric(df['susd_depression'], errors='coerce')
+df['susd_mania'] = pd.to_numeric(df['susd_mania'], errors='coerce')
+df['mandf_cann'] = pd.to_numeric(df['mandf_cann'], errors='coerce')
+df['demo_yrs'] = pd.to_numeric(df['demo_yrs'], errors='coerce')
+df['spsrq_sr'] = pd.to_numeric(df['spsrq_sr'], errors='coerce')
+
+# Create numeric gender (1=Male, 2=Female, etc.)
+df['demo_gender_num'] = pd.to_numeric(df['demo_sab'], errors='coerce')
+
+def compute_regression_stats(df_subset, outcome_col, n_points=50):
+    """
+    Compute multiple regression statistics for GSAS predicting outcome,
+    controlling for age, gender, and reward sensitivity.
+    Returns dict with stats and predicted line (varying GSAS, covariates at mean).
+    """
+    # Required columns
+    cols = ['gsas_total', outcome_col, 'demo_yrs', 'demo_gender_num', 'spsrq_sr']
+    analysis_df = df_subset[cols].dropna()
+    
+    n = len(analysis_df)
+    if n < 20:
+        return None, None
+    
+    y = analysis_df[outcome_col]
+    X = analysis_df[['gsas_total', 'demo_yrs', 'demo_gender_num', 'spsrq_sr']]
+    X = sm.add_constant(X)
+    
+    try:
+        model = sm.OLS(y, X).fit()
+    except:
+        return None, None
+    
+    # Extract GSAS coefficient (partial effect controlling for covariates)
+    beta_gsas = model.params['gsas_total']
+    se_gsas = model.bse['gsas_total']
+    p_gsas = model.pvalues['gsas_total']
+    
+    # Partial correlation: correlation between GSAS and outcome after removing covariate effects
+    # Residualize both GSAS and outcome on covariates
+    covars = analysis_df[['demo_yrs', 'demo_gender_num', 'spsrq_sr']]
+    covars_const = sm.add_constant(covars)
+    
+    gsas_resid = sm.OLS(analysis_df['gsas_total'], covars_const).fit().resid
+    outcome_resid = sm.OLS(analysis_df[outcome_col], covars_const).fit().resid
+    partial_r, _ = stats.pearsonr(gsas_resid, outcome_resid)
+    
+    # Generate predicted line: vary GSAS, hold covariates at their means
+    gsas_min = float(analysis_df['gsas_total'].min())
+    gsas_max = float(analysis_df['gsas_total'].max())
+    gsas_line = np.linspace(gsas_min, gsas_max, n_points)
+    
+    # Create prediction data with covariates at mean
+    pred_data = pd.DataFrame({
+        'const': 1,
+        'gsas_total': gsas_line,
+        'demo_yrs': analysis_df['demo_yrs'].mean(),
+        'demo_gender_num': analysis_df['demo_gender_num'].mean(),
+        'spsrq_sr': analysis_df['spsrq_sr'].mean()
+    })
+    
+    # Get predictions with confidence intervals
+    predictions = model.get_prediction(pred_data)
+    pred_summary = predictions.summary_frame(alpha=0.05)
+    
+    y_line = pred_summary['mean'].tolist()
+    y_ci_lower = pred_summary['mean_ci_lower'].tolist()
+    y_ci_upper = pred_summary['mean_ci_upper'].tolist()
+    
+    # Scatter data (raw values for display)
+    scatter_data = {
+        'x': analysis_df['gsas_total'].tolist(),
+        'y': analysis_df[outcome_col].tolist()
+    }
+    
+    reg_stats = {
+        'n': int(n),
+        'r': round(float(partial_r), 3),
+        'beta': round(float(beta_gsas), 3),
+        'se_beta': round(float(se_gsas), 3),
+        'p': float(p_gsas),
+        'r_squared': round(float(model.rsquared), 3),
+        'line_x': gsas_line.tolist(),
+        'line_y': y_line,
+        'ci_lower': y_ci_lower,
+        'ci_upper': y_ci_upper,
+        # Also export covariate effects for reference
+        'covariates': {
+            'age_beta': round(float(model.params['demo_yrs']), 3),
+            'age_p': float(model.pvalues['demo_yrs']),
+            'gender_beta': round(float(model.params['demo_gender_num']), 3),
+            'gender_p': float(model.pvalues['demo_gender_num']),
+            'spsrq_beta': round(float(model.params['spsrq_sr']), 3),
+            'spsrq_p': float(model.pvalues['spsrq_sr'])
+        }
+    }
+    
+    return reg_stats, scatter_data
+
+# Build export data for each outcome
+outcomes = {
+    'depression': {
+        'col': 'susd_depression',
+        'label': 'Depression Score'
+    },
+    'mania': {
+        'col': 'susd_mania',
+        'label': 'Mania Score'
+    },
+    'cannabis': {
+        'col': 'mandf_cann',
+        'label': 'Cannabis Days/Month'
+    }
+}
+
+moderation_data = {}
+
+for outcome_key, outcome_info in outcomes.items():
+    print(f"  Processing {outcome_key}...")
+    
+    overall_stats, scatter_data = compute_regression_stats(df, outcome_info['col'])
+    
+    if overall_stats and scatter_data:
+        moderation_data[outcome_key] = {
+            'scatter': scatter_data,
+            'overall': overall_stats,
+            'label': outcome_info['label']
+        }
+        print(f"    GSAS β = {overall_stats['beta']}, p = {overall_stats['p']:.4f}")
+    else:
+        print(f"    ⚠ Insufficient data for {outcome_key}")
+
+with open('viz_data/moderation_analysis.json', 'w') as f:
+    json.dump(moderation_data, f, indent=2)
+
+print(f"  ✓ Mental health regression data exported (controlling for age, gender, SPSRQ)")
+
 print("\nFiles created in 'viz_data/' folder:")
 print("  • geographic.json")
 print("  • demographics.json")
 print("  • problem_gambling_states.json")
 print("  • gambling_comparison.json")
 print("  • age_gambling_scatter.json")
+print("  • moderation_analysis.json  [NEW]")
 print("\nCopy the 'viz_data' folder to your website directory")
 print("and open visualizations.html to see your dashboard!")
-
