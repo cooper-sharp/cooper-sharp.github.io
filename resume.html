@@ -30,7 +30,7 @@
         }
 
         /* ==================== */
-        /* STYLED MODE */
+        /* STYLED MODE (Light)  */
         /* ==================== */
         body.styled {
             font-family: "DM Sans", sans-serif;
@@ -198,7 +198,7 @@
 
         .styled .pub-title {
             font-weight: 500;
-            color: #2c3e50;
+            color: #ffffff;
         }
 
         .styled .pub-authors {
@@ -262,7 +262,128 @@
         }
 
         /* ==================== */
-        /* LATEX MODE           */
+        /* STYLED MODE (Dark)   */
+        /* ==================== */
+        [data-theme="dark"] body.styled {
+            background: linear-gradient(135deg, #065f46 0%, #064e3b 100%);
+        }
+
+        [data-theme="dark"] .styled .resume-container {
+            background: rgba(30, 41, 59, 0.98);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        [data-theme="dark"] .styled h1 {
+            background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        [data-theme="dark"] .styled .contact-info {
+            color: #94a3b8;
+        }
+
+        [data-theme="dark"] .styled .contact-info a {
+            color: #34d399;
+        }
+
+        [data-theme="dark"] .styled .section-title {
+            color: #e2e8f0;
+            border-bottom-color: #34d399;
+        }
+
+        [data-theme="dark"] .styled .item {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+            border-left-color: #34d399;
+        }
+
+        [data-theme="dark"] .styled .item-title {
+            color: #e2e8f0;
+        }
+
+        [data-theme="dark"] .styled .item-date {
+            color: #94a3b8;
+        }
+
+        [data-theme="dark"] .styled .item-subtitle {
+            color: #94a3b8;
+        }
+
+        [data-theme="dark"] .styled .item-description {
+            color: #cbd5e1;
+        }
+
+        [data-theme="dark"] .styled ul li {
+            color: #cbd5e1;
+        }
+
+        [data-theme="dark"] .styled ul li:before {
+            color: #34d399;
+        }
+
+        [data-theme="dark"] .styled .pub-list li, 
+        [data-theme="dark"] .styled .pres-list li {
+            border-bottom-color: #374151;
+        }
+
+        [data-theme="dark"] .styled .pub-title {
+            color: #e2e8f0;
+        }
+
+        [data-theme="dark"] .styled .pub-authors {
+            color: #94a3b8;
+        }
+
+        [data-theme="dark"] .styled .pub-venue {
+            color: #6ee7b7;
+        }
+
+        [data-theme="dark"] .styled .pub-venue a {
+            color: #6ee7b7;
+        }
+
+        [data-theme="dark"] .styled .pub-venue a:hover {
+            color: #a7f3d0;
+        }
+
+        [data-theme="dark"] .styled .pub-list a,
+        [data-theme="dark"] .styled .pres-list a {
+            color: #6ee7b7;
+        }
+
+        [data-theme="dark"] .styled .pub-list a:hover,
+        [data-theme="dark"] .styled .pres-list a:hover {
+            color: #a7f3d0;
+        }
+
+        [data-theme="dark"] .styled .contact-info a {
+            color: #6ee7b7;
+        }
+
+        [data-theme="dark"] .styled .contact-info a:hover {
+            color: #a7f3d0;
+        }
+
+        [data-theme="dark"] .styled .skill-row {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+            border-left-color: #34d399;
+        }
+
+        [data-theme="dark"] .styled .skill-label {
+            color: #34d399;
+        }
+
+        [data-theme="dark"] .styled .skill-items {
+            color: #cbd5e1;
+        }
+
+        [data-theme="dark"] .styled .research-interests {
+            color: #cbd5e1;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+        }
+
+        /* ==================== */
+        /* LATEX MODE (Light)   */
         /* ==================== */
         body.latex {
             font-family: "EB Garamond", "Times New Roman", serif;
@@ -483,13 +604,132 @@
         }
 
         /* ==================== */
-        /* TOGGLE SWITCH        */
+        /* LATEX MODE (Dark)    */
         /* ==================== */
-        .style-toggle {
+        [data-theme="dark"] body.latex {
+            background: #111827;
+            color: #e5e7eb;
+        }
+
+        [data-theme="dark"] .latex .resume-container {
+            background: #111827;
+        }
+
+        [data-theme="dark"] .latex .header {
+            border-bottom-color: #e5e7eb;
+        }
+
+        [data-theme="dark"] .latex h1 {
+            color: #f3f4f6;
+        }
+
+        [data-theme="dark"] .latex .contact-info {
+            color: #d1d5db;
+        }
+
+        [data-theme="dark"] .latex .contact-info .separator {
+            color: #6b7280;
+        }
+
+        [data-theme="dark"] .latex .contact-info a {
+            color: #d1d5db;
+        }
+
+        [data-theme="dark"] .latex .section-title {
+            color: #f3f4f6;
+            border-bottom-color: #d1d5db;
+        }
+
+        [data-theme="dark"] .latex .item-title {
+            color: #f3f4f6;
+        }
+
+        [data-theme="dark"] .latex .item-date {
+            color: #9ca3af;
+        }
+
+        [data-theme="dark"] .latex .item-subtitle {
+            color: #9ca3af;
+        }
+
+        [data-theme="dark"] .latex .item-description {
+            color: #d1d5db;
+        }
+
+        [data-theme="dark"] .latex ul li {
+            color: #d1d5db;
+        }
+
+        [data-theme="dark"] .latex ul li:before {
+            color: #d1d5db;
+        }
+
+        [data-theme="dark"] .latex .pub-authors,
+        [data-theme="dark"] .latex .pub-title,
+        [data-theme="dark"] .latex .pub-venue {
+            color: #d1d5db;
+        }
+
+        [data-theme="dark"] .latex .pub-venue a {
+            color: #93c5fd;
+        }
+
+        [data-theme="dark"] .latex .pub-venue a:hover {
+            color: #bfdbfe;
+        }
+
+        [data-theme="dark"] .latex .pub-list a,
+        [data-theme="dark"] .latex .pres-list a {
+            color: #93c5fd;
+        }
+
+        [data-theme="dark"] .latex .pub-list a:hover,
+        [data-theme="dark"] .latex .pres-list a:hover {
+            color: #bfdbfe;
+        }
+
+        [data-theme="dark"] .latex .contact-info a {
+            color: #93c5fd;
+        }
+
+        [data-theme="dark"] .latex .contact-info a:hover {
+            color: #bfdbfe;
+        }
+
+        [data-theme="dark"] .latex .skill-label,
+        [data-theme="dark"] .latex .skill-items {
+            color: #d1d5db;
+        }
+
+        [data-theme="dark"] .latex .research-interests {
+            color: #d1d5db;
+        }
+
+        [data-theme="dark"] .latex .back-button {
+            background: #1f2937;
+            color: #e5e7eb;
+            border-color: #e5e7eb;
+        }
+
+        [data-theme="dark"] .latex .back-button:hover {
+            background: #e5e7eb;
+            color: #111827;
+        }
+
+        /* ==================== */
+        /* TOGGLE SWITCHES      */
+        /* ==================== */
+        .toggle-container {
             position: fixed;
             top: 1rem;
             right: 1rem;
             z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .style-toggle, .theme-toggle-wrapper {
             display: flex;
             align-items: center;
             gap: 0.75rem;
@@ -501,13 +741,26 @@
             font-size: 0.85rem;
         }
 
+        [data-theme="dark"] .style-toggle,
+        [data-theme="dark"] .theme-toggle-wrapper {
+            background: rgba(30, 41, 59, 0.95);
+        }
+
         .toggle-label {
             color: #666;
             font-weight: 500;
         }
 
+        [data-theme="dark"] .toggle-label {
+            color: #9ca3af;
+        }
+
         .toggle-label.active {
             color: #000;
+        }
+
+        [data-theme="dark"] .toggle-label.active {
+            color: #f3f4f6;
         }
 
         .toggle-switch {
@@ -522,6 +775,10 @@
 
         .toggle-switch.latex-active {
             background: #333;
+        }
+
+        [data-theme="dark"] .toggle-switch.latex-active {
+            background: #6b7280;
         }
 
         .toggle-switch::after {
@@ -540,12 +797,64 @@
             transform: translateX(20px);
         }
 
+        /* Theme Toggle Button */
+        .theme-toggle-btn {
+            background: none;
+            border: 1px solid #e5e7eb;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] .theme-toggle-btn {
+            border-color: #4b5563;
+        }
+
+        .theme-toggle-btn:hover {
+            border-color: var(--color-accent);
+        }
+
+        .theme-toggle-btn svg {
+            width: 18px;
+            height: 18px;
+            color: #666;
+        }
+
+        [data-theme="dark"] .theme-toggle-btn svg {
+            color: #9ca3af;
+        }
+
+        .theme-toggle-btn:hover svg {
+            color: var(--color-accent);
+        }
+
+        .theme-toggle-btn .sun-icon {
+            display: none;
+        }
+
+        .theme-toggle-btn .moon-icon {
+            display: block;
+        }
+
+        [data-theme="dark"] .theme-toggle-btn .sun-icon {
+            display: block;
+        }
+
+        [data-theme="dark"] .theme-toggle-btn .moon-icon {
+            display: none;
+        }
+
         /* ==================== */
         /* TOGGLE HINT TOOLTIP  */
         /* ==================== */
         .toggle-hint {
             position: fixed;
-            top: 4rem;
+            top: 7rem;
             right: 1rem;
             background: #1e293b;
             color: white;
@@ -634,7 +943,7 @@
                 box-shadow: none !important;
                 padding: 1rem !important;
             }
-            .back-button, .style-toggle, .toggle-hint {
+            .back-button, .toggle-container, .toggle-hint {
                 display: none !important;
             }
         }
@@ -658,14 +967,14 @@
             .item-header {
                 flex-direction: column;
             }
-            .style-toggle {
+            .toggle-container {
                 top: auto;
                 bottom: 1rem;
                 right: 1rem;
             }
             .toggle-hint {
                 top: auto;
-                bottom: 4.5rem;
+                bottom: 8rem;
                 right: 1rem;
             }
             .toggle-hint::before {
@@ -685,11 +994,27 @@
     </style>
 </head>
 <body class="latex">
-    <!-- Style Toggle -->
-    <div class="style-toggle">
-        <span class="toggle-label" id="styledLabel">Styled</span>
-        <div class="toggle-switch latex-active" id="toggleSwitch" onclick="toggleStyle()"></div>
-        <span class="toggle-label active" id="latexLabel">LaTeX</span>
+    <!-- Toggle Container -->
+    <div class="toggle-container">
+        <!-- Style Toggle -->
+        <div class="style-toggle">
+            <span class="toggle-label" id="styledLabel">Styled</span>
+            <div class="toggle-switch latex-active" id="toggleSwitch" onclick="toggleStyle()"></div>
+            <span class="toggle-label active" id="latexLabel">LaTeX</span>
+        </div>
+        
+        <!-- Theme Toggle -->
+        <div class="theme-toggle-wrapper">
+            <span class="toggle-label">Theme</span>
+            <button class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">
+                <svg class="moon-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                </svg>
+                <svg class="sun-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                </svg>
+            </button>
+        </div>
     </div>
 
     <!-- Toggle Hint Tooltip -->
@@ -1009,7 +1334,7 @@
                 <div class="skill-row">
                     <ul>
                         <li>Responsible Conduct of Research</li>
-                        <li>Good Clincial Practices</li>
+                        <li>Good Clinical Practices</li>
                         <li>Social Behavioral Research</li>
                         <li>Practice Runs</li>
                         <li>Act 34 Clearance</li>
@@ -1021,6 +1346,28 @@
     </div>
 
     <script>
+        // Theme toggle functionality
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        // Load saved theme on page load
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            } else if (prefersDark) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+
         function toggleStyle() {
             const body = document.body;
             const toggle = document.getElementById('toggleSwitch');
@@ -1054,10 +1401,10 @@
         // On page load
         document.addEventListener('DOMContentLoaded', function() {
             // Check for saved style preference
-        const savedStyle = localStorage.getItem('cvStyle');
-        if (savedStyle === 'styled') {
-            toggleStyle();
-        }
+            const savedStyle = localStorage.getItem('cvStyle');
+            if (savedStyle === 'styled') {
+                toggleStyle();
+            }
 
             // Show hint only if not seen before
             if (!localStorage.getItem('cvHintSeen')) {

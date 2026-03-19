@@ -18,6 +18,16 @@
             --color-border: #e5e7eb;
         }
 
+        [data-theme="dark"] {
+            --color-primary: #f3f4f6;
+            --color-accent: #6ee7b7;
+            --color-text: #d1d5db;
+            --color-text-light: #9ca3af;
+            --color-bg: #111827;
+            --color-surface: #1f2937;
+            --color-border: #374151;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -29,6 +39,7 @@
             background-color: var(--color-bg);
             color: var(--color-text);
             line-height: 1.7;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         a {
@@ -86,14 +97,16 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--color-bg);
+            opacity: 0.95;
             backdrop-filter: blur(10px);
             z-index: 1000;
             border-bottom: 1px solid var(--color-border);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
 
         nav .container {
-            max-width: 720px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 1.2rem 2rem;
             display: flex;
@@ -109,6 +122,12 @@
             letter-spacing: -0.01em;
             opacity: 0;
             animation: fadeIn 0.5s ease-out 0.1s forwards;
+        }
+
+        nav .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
         }
 
         nav ul {
@@ -138,9 +157,57 @@
             opacity: 1;
         }
 
+        /* Dark Mode Toggle */
+        .theme-toggle {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: fadeIn 0.5s ease-out 0.35s forwards;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--color-accent);
+            transform: scale(1.05);
+        }
+
+        .theme-toggle svg {
+            width: 18px;
+            height: 18px;
+            color: var(--color-text-light);
+            transition: color 0.3s ease;
+        }
+
+        .theme-toggle:hover svg {
+            color: var(--color-accent);
+        }
+
+        .theme-toggle .sun-icon {
+            display: none;
+        }
+
+        .theme-toggle .moon-icon {
+            display: block;
+        }
+
+        [data-theme="dark"] .theme-toggle .sun-icon {
+            display: block;
+        }
+
+        [data-theme="dark"] .theme-toggle .moon-icon {
+            display: none;
+        }
+
         /* Main Content */
         main {
-            max-width: 720px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 10rem 2rem 6rem;
         }
@@ -276,6 +343,7 @@
             border-radius: 8px;
             background: var(--color-surface);
             border: 1px solid var(--color-border);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
 
         .carousel-track {
@@ -301,9 +369,17 @@
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
+        [data-theme="dark"] .carousel-slide img {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        }
+
         .carousel-slide img:hover {
             transform: scale(1.02);
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        [data-theme="dark"] .carousel-slide img:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
         }
 
         .carousel-caption {
@@ -449,10 +525,11 @@
 
         /* Footer */
         footer {
-            max-width: 720px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 3rem 2rem;
             border-top: 1px solid var(--color-border);
+            transition: border-color 0.3s ease;
         }
 
         footer p {
@@ -481,6 +558,52 @@
             height: auto;
         }
 
+        /* Hero with photo */
+        .hero-content {
+            display: flex;
+            gap: 3rem;
+            align-items: flex-start;
+        }
+
+        .hero-text {
+            flex: 1;
+        }
+
+        .hero-photo {
+            flex-shrink: 0;
+        }
+
+        .hero-photo img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--color-border);
+            transition: border-color 0.3s ease;
+        }
+
+        .hero-photo img:hover {
+            border-color: var(--color-accent);
+        }
+
+        /* Responsive - stack on mobile */
+        @media (max-width: 600px) {
+            .hero-content {
+                flex-direction: column-reverse;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .hero-photo img {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .hero-links {
+                justify-content: center;
+            }
+        }
+
         /* Responsive */
         @media (max-width: 600px) {
             main {
@@ -494,6 +617,11 @@
             nav .container {
                 flex-direction: column;
                 gap: 1rem;
+            }
+
+            nav .nav-right {
+                width: 100%;
+                justify-content: space-between;
             }
 
             nav ul {
@@ -514,30 +642,47 @@
     <nav>
         <div class="container">
             <div class="logo">Cooper J. Sharp</div>
-            <ul>
-                <li><a href="resume.html">CV</a></li>
-                <li><a href="projects.html">Projects</a></li>
-                <li><a href="photos.html">Photos</a></li>
-            </ul>
+            <div class="nav-right">
+                <ul>
+                    <li><a href="resume.html">CV</a></li>
+                    <li><a href="projects.html">Projects</a></li>
+                    <li><a href="photos.html">Photos</a></li>
+                </ul>
+                <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+                    <svg class="moon-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                    </svg>
+                    <svg class="sun-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                    </svg>
+                </button>
+            </div>
         </div>
     </nav>
 
     <main>
         <section class="hero">
-            <h1 class="animate-in delay-1">Hello, I'm Cooper!</h1>
-            <p class="hero-intro animate-in delay-2">
-                I'm a Laboratory Manager at the <a href="https://sites.temple.edu/neuroeconlab/people/" target="_blank">Temple University Neuroeconomics Lab</a>, where I study reward processing, decision-making, and social cognition across the adult lifespan. <span class="affiliation">I'm also pursuing an M.S. in Business Analytics at Temple.</span>
-            </p>
-            <p class="hero-intro animate-in delay-3">
-                My research focuses on gambling behavior, financial exploitation risk, and fMRI methodology. I'm a consistent contributor to open science—maintaining datasets on OpenNeuro and pre-registrations on OSF.
-            </p>
-            <p class="hero-intro animate-in delay-3">
-                Take a look at my projects page to see some snippets of my work!
-            </p>
-            <div class="hero-links animate-in delay-4">
-                <a href="mailto:cooperjosephsharp@gmail.com">Email</a>
-                <a href="https://github.com/cooper-sharp" target="_blank">GitHub</a>
-                <a href="https://scholar.google.com/citations?user=yourprofile" target="_blank">Google Scholar</a>
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="animate-in delay-1">Hello, I'm Cooper!</h1>
+                    <p class="hero-intro animate-in delay-2">
+                        I'm a Laboratory Manager at the <a href="https://sites.temple.edu/neuroeconlab/people/" target="_blank">Temple University Neuroeconomics Lab</a>, where I study reward processing, decision-making, and social cognition across the adult lifespan. <span class="affiliation">I'm also pursuing an M.S. in Business Analytics at Temple.</span>
+                    </p>
+                    <p class="hero-intro animate-in delay-3">
+                        My research focuses on gambling behavior, financial exploitation risk, and fMRI methodology. I'm a consistent contributor to open science—maintaining datasets on OpenNeuro and pre-registrations on OSF.
+                    </p>
+                    <p class="hero-intro animate-in delay-3">
+                        Take a look at my <a href="projects.html">projects page</a> to see some snippets of my work!
+                    </p>
+                    <div class="hero-links animate-in delay-4">
+                        <a href="mailto:cooperjosephsharp@gmail.com">Email</a>
+                        <a href="https://github.com/cooper-sharp" target="_blank">GitHub</a>
+                        <a href="https://scholar.google.com/citations?user=yourprofile" target="_blank">Google Scholar</a>
+                    </div>
+                </div>
+                <div class="hero-photo animate-in delay-2">
+                    <img src="photos/headshot.png" alt="Cooper J. Sharp">
+                </div>
             </div>
         </section>
 
@@ -661,6 +806,28 @@
     </footer>
 
     <script>
+        // Theme toggle functionality
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        // Load saved theme on page load
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            } else if (prefersDark) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+
         // Carousel functionality
         let currentSlide = 0;
         const track = document.getElementById('carouselTrack');
